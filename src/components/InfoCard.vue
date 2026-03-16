@@ -8,7 +8,7 @@
 .info-card {
   position: relative;
   border: 1px solid var(--border-soft);
-  border-radius: 0.75rem;
+  border-radius: 0.35rem;
   background: var(--surface-card);
   overflow: hidden;
 }

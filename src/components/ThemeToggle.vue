@@ -31,7 +31,7 @@ defineEmits<{
   align-items: center;
   gap: 0.75rem;
   border: 1px solid var(--border-strong);
-  border-radius: 0.6rem;
+  border-radius: 0.35rem;
   background: var(--surface-raised);
   color: var(--text-primary);
   padding: 0.55rem 0.8rem;
@@ -45,7 +45,7 @@ defineEmits<{
   width: 2.4rem;
   height: 1.35rem;
   background: color-mix(in srgb, var(--accent) 28%, var(--surface-muted));
-  border-radius: 0.7rem;
+  border-radius: 0.3rem;
   padding: 0.12rem;
   display: inline-flex;
 }
@@ -53,7 +53,7 @@ defineEmits<{
 .theme-toggle__thumb {
   width: 1.1rem;
   height: 1.1rem;
-  border-radius: 0.45rem;
+  border-radius: 0.2rem;
   background: var(--surface-elevated);
   transition: transform 180ms ease;
 }

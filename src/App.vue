@@ -5,7 +5,7 @@ import SectionShell from './components/SectionShell.vue';
 import SidebarNav from './components/SidebarNav.vue';
 import TagList from './components/TagList.vue';
 import ThemeToggle from './components/ThemeToggle.vue';
-import { about, contact, education, experience, navItems, profile, projects, skillGroups } from './content';
+import { about, education, experience, navItems, profile, projects } from './content';
 import type { Theme } from './content';
 
 const themeKey = 'resume-theme';
@@ -43,13 +43,6 @@ const heroActions = computed(() =>
 const heroEmailLink = computed(() => heroActions.value.find((link) => link.isEmail));
 const heroSocialLinks = computed(() => heroActions.value.filter((link) => !link.isEmail));
 
-const contactLinks = computed(() =>
-  contact.links.map((link) => ({
-    ...link,
-    rel: link.href.startsWith('http') ? 'noopener noreferrer' : undefined,
-    target: link.href.startsWith('http') ? '_blank' : undefined
-  }))
-);
 </script>
 
 <template>
@@ -112,67 +105,6 @@ const contactLinks = computed(() =>
               </p>
             </div>
           </InfoCard>
-        </SectionShell>
-
-        <SectionShell
-          id="skills"
-          title="Skills / Tech Stack"
-        >
-          <div class="skills-grid">
-            <InfoCard v-for="group in skillGroups" :key="group.title">
-              <div class="skill-card">
-                <div>
-                  <p class="card-label">{{ group.title }}</p>
-                  <p class="card-copy">{{ group.description }}</p>
-                </div>
-                <TagList :items="group.items" accent />
-              </div>
-            </InfoCard>
-          </div>
-        </SectionShell>
-
-        <SectionShell
-          id="experience"
-          title="Experience"
-        >
-          <div class="stack-grid">
-            <InfoCard v-for="role in experience" :key="`${role.company}-${role.role}`">
-              <div class="timeline-card">
-                <div class="timeline-card__header">
-                  <div>
-                    <h3>{{ role.role }}</h3>
-                    <p class="timeline-card__company">
-                      <a
-                        v-if="role.website"
-                        :href="role.website"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {{ role.company }}
-                      </a>
-                      <template v-else>
-                        {{ role.company }}
-                      </template>
-                    </p>
-                  </div>
-                  <div class="timeline-card__meta">
-                    <span>{{ role.period }}</span>
-                    <span>{{ role.location }}</span>
-                  </div>
-                </div>
-
-                <p class="card-copy">{{ role.summary }}</p>
-
-                <ul class="check-list">
-                  <li v-for="achievement in role.achievements" :key="achievement">
-                    {{ achievement }}
-                  </li>
-                </ul>
-
-                <TagList :items="role.tech" />
-              </div>
-            </InfoCard>
-          </div>
         </SectionShell>
 
         <SectionShell
@@ -239,29 +171,45 @@ const contactLinks = computed(() =>
           </div>
         </SectionShell>
 
-        <SectionShell id="contact" title="Contact / Links">
-          <div class="contact-grid">
-            <InfoCard>
-              <div class="contact-card">
-                <p class="card-label">Availability</p>
-                <h3>{{ contact.heading }}</h3>
-                <p class="card-copy">{{ contact.availability }}</p>
-              </div>
-            </InfoCard>
+        <SectionShell
+          id="experience"
+          title="Experience"
+        >
+          <div class="stack-grid">
+            <InfoCard v-for="role in experience" :key="`${role.company}-${role.role}`">
+              <div class="timeline-card">
+                <div class="timeline-card__header">
+                  <div>
+                    <h3>{{ role.role }}</h3>
+                    <p class="timeline-card__company">
+                      <a
+                        v-if="role.website"
+                        :href="role.website"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {{ role.company }}
+                      </a>
+                      <template v-else>
+                        {{ role.company }}
+                      </template>
+                    </p>
+                  </div>
+                  <div class="timeline-card__meta">
+                    <span>{{ role.period }}</span>
+                    <span>{{ role.location }}</span>
+                  </div>
+                </div>
 
-            <InfoCard>
-              <div class="contact-links">
-                <a
-                  v-for="link in contactLinks"
-                  :key="link.label"
-                  class="contact-links__item"
-                  :href="link.href"
-                  :target="link.target"
-                  :rel="link.rel"
-                >
-                  <span class="contact-links__label">{{ link.label }}</span>
-                  <span class="contact-links__value">{{ link.value }}</span>
-                </a>
+                <p class="card-copy">{{ role.summary }}</p>
+
+                <ul class="check-list">
+                  <li v-for="achievement in role.achievements" :key="achievement">
+                    {{ achievement }}
+                  </li>
+                </ul>
+
+                <TagList :items="role.tech" />
               </div>
             </InfoCard>
           </div>
@@ -392,7 +340,7 @@ const contactLinks = computed(() =>
   min-height: 2.9rem;
   padding: 0.72rem 1rem;
   border: 1px solid var(--border-soft);
-  border-radius: 0.6rem;
+  border-radius: 0.35rem;
   background: var(--surface-card);
   color: var(--text-primary);
 }

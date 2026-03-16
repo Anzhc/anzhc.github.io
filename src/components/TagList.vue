@@ -24,7 +24,7 @@ defineProps<{
 }
 
 .tag-list__item {
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   border: 1px solid var(--border-soft);
   background: var(--surface-muted);
   color: var(--text-secondary);

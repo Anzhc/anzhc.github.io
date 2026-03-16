@@ -87,7 +87,7 @@ defineEmits<{
   height: 2.8rem;
   padding: 0;
   border: 1px solid var(--border-strong);
-  border-radius: 0.55rem;
+  border-radius: 0.28rem;
   background: var(--surface-raised);
   color: var(--text-primary);
   cursor: pointer;
