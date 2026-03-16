@@ -80,6 +80,8 @@ export interface ShowcaseCardItem {
   description: string;
   href?: string;
   linkLabel?: string;
+  imageSrc?: string;
+  imageAlt?: string;
 }
 
 export interface EducationItem {

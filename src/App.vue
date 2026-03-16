@@ -300,15 +300,30 @@ onBeforeUnmount(() => {
           id="posts"
           title="Posts"
         >
-          <div class="showcase-grid">
-            <InfoCard v-for="post in posts" :key="post.title">
-              <div class="showcase-card">
-                <div class="showcase-card__header">
-                  <h3>{{ post.title }}</h3>
+          <div class="posts-grid">
+            <InfoCard
+              v-for="post in posts"
+              :key="post.title"
+              class="showcase-card showcase-card--interactive"
+            >
+              <a
+                class="post-card"
+                :href="post.href"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <div class="post-card__copy">
+                  <div class="showcase-card__header">
+                    <h3>{{ post.title }}</h3>
+                  </div>
+
+                  <p>{{ post.description }}</p>
                 </div>
 
-                <p>{{ post.description }}</p>
-              </div>
+                <div v-if="post.imageSrc" class="post-card__media">
+                  <img :src="post.imageSrc" :alt="post.imageAlt ?? post.title" />
+                </div>
+              </a>
             </InfoCard>
           </div>
         </SectionShell>
@@ -700,6 +715,11 @@ onBeforeUnmount(() => {
   gap: 1rem;
 }
 
+.posts-grid {
+  display: grid;
+  gap: 1rem;
+}
+
 .showcase-card {
   display: grid;
   height: 100%;
@@ -721,6 +741,48 @@ onBeforeUnmount(() => {
   gap: 0.85rem;
   min-height: 100%;
   padding: 1.2rem 1.25rem;
+}
+
+.post-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  min-height: 16rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.post-card:focus-visible {
+  outline: none;
+}
+
+.post-card__copy {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1.05rem 1.15rem;
+}
+
+.post-card__copy p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.post-card__media {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+  border-left: 1px solid var(--border-soft);
+  background: color-mix(in srgb, var(--surface-raised) 72%, transparent);
+}
+
+.post-card__media img {
+  width: auto;
+  max-width: min(18rem, 28vw);
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .showcase-card__header {
@@ -1002,6 +1064,23 @@ onBeforeUnmount(() => {
 
   .showcase-grid {
     grid-template-columns: 1fr;
+  }
+
+  .post-card {
+    grid-template-columns: 1fr;
+  }
+
+  .post-card__media {
+    justify-content: center;
+    min-height: 12rem;
+    border-top: 1px solid var(--border-soft);
+    border-left: 0;
+  }
+
+  .post-card__media img {
+    width: 100%;
+    max-width: none;
+    height: auto;
   }
 
   .project-group {
