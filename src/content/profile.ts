@@ -3,10 +3,9 @@ import avatarImage from '../../media/pfp.jpg';
 
 export const profile: Profile = {
   name: 'Anzhc',
-  title: 'Senior Frontend Engineer & Product-Focused Builder',
+  title: 'AI Enthusiast',
   location: 'Based in Austin, TX',
-  intro:
-    'I design and ship elegant interfaces for teams that care about clarity, performance, and durable product decisions.',
+  intro: 'I try to make things happen.',
   avatarImage,
   avatarAlt: 'Jordan Vale portrait',
   summary:
