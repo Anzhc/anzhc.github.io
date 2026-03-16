@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import InfoCard from './components/InfoCard.vue';
 import SectionShell from './components/SectionShell.vue';
 import SidebarNav from './components/SidebarNav.vue';
@@ -42,6 +42,7 @@ const heroActions = computed(() =>
 
 const heroEmailLink = computed(() => heroActions.value.find((link) => link.isEmail));
 const heroSocialLinks = computed(() => heroActions.value.filter((link) => !link.isEmail));
+const activeSectionId = ref(navItems[0]?.id ?? '');
 
 const compactNumber = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 1,
@@ -57,6 +58,63 @@ const shortDate = new Intl.DateTimeFormat('en-US', {
 const formatCompactNumber = (value: number) => compactNumber.format(value);
 const formatShortDate = (value: string) => shortDate.format(new Date(value));
 
+let sectionObserver: IntersectionObserver | null = null;
+
+onMounted(() => {
+  const sections = navItems
+    .map((item) => document.getElementById(item.id))
+    .filter((section): section is HTMLElement => section instanceof HTMLElement);
+
+  if (sections.length === 0) {
+    return;
+  }
+
+  const visibleSections = new Map<string, number>();
+
+  sectionObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const sectionId = entry.target.id;
+
+        if (entry.isIntersecting) {
+          visibleSections.set(sectionId, entry.intersectionRatio);
+        } else {
+          visibleSections.delete(sectionId);
+        }
+      }
+
+      if (visibleSections.size === 0) {
+        return;
+      }
+
+      const [nextActiveSection] = [...visibleSections.entries()].sort((left, right) => {
+        if (right[1] !== left[1]) {
+          return right[1] - left[1];
+        }
+
+        const leftIndex = navItems.findIndex((item) => item.id === left[0]);
+        const rightIndex = navItems.findIndex((item) => item.id === right[0]);
+
+        return leftIndex - rightIndex;
+      })[0];
+
+      activeSectionId.value = nextActiveSection;
+    },
+    {
+      rootMargin: '-20% 0px -55% 0px',
+      threshold: [0.2, 0.35, 0.5, 0.65]
+    }
+  );
+
+  for (const section of sections) {
+    sectionObserver.observe(section);
+  }
+});
+
+onBeforeUnmount(() => {
+  sectionObserver?.disconnect();
+});
+
 </script>
 
 <template>
@@ -64,6 +122,7 @@ const formatShortDate = (value: string) => shortDate.format(new Date(value));
     <SidebarNav
       :nav-items="navItems"
       :theme="theme"
+      :active-section-id="activeSectionId"
       @toggle-theme="toggleTheme"
     />
 

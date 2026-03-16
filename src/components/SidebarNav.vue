@@ -5,6 +5,7 @@ import type { NavItem, Theme } from '../content';
 defineProps<{
   navItems: NavItem[];
   theme: Theme;
+  activeSectionId?: string;
 }>();
 
 defineEmits<{
@@ -29,6 +30,7 @@ defineEmits<{
         v-for="item in navItems"
         :key="item.id"
         class="sidebar-nav__link"
+        :class="{ 'sidebar-nav__link--active': item.id === activeSectionId }"
         :href="`#${item.id}`"
       >
         {{ item.label }}
@@ -67,6 +69,9 @@ defineEmits<{
   font-weight: 700;
   text-align: left;
   letter-spacing: -0.01em;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 .sidebar-nav__link::before {
@@ -75,6 +80,15 @@ defineEmits<{
   width: 1.35rem;
   margin-right: 0.5rem;
   color: var(--accent-strong);
+}
+
+.sidebar-nav__link--active {
+  color: var(--text-primary);
+  transform: translateX(0.2rem);
+}
+
+.sidebar-nav__link--active::before {
+  color: var(--accent);
 }
 
 .sidebar-nav__toggle {
