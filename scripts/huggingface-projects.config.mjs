@@ -17,19 +17,23 @@ export const profileConfigs = [
       },
       {
         repoId: 'Anzhc/MS-LC-EQ-D-VR_VAE',
-        description: 'VAE release for the MS-LC-EQ-D-VR model line.'
+        description:
+          'An SDXL VAE lineup reproducing results of the EQ-VAE paper, while applying few fixes proposed in VIVAT paper. Significantly outperforming original SDXL vae and other EQ VAEs known at the time, while requiring relatively low compute to train.'
       },
       {
         repoId: 'Anzhc/Z-Image_Anime_VAE',
-        description: 'Anime-focused VAE checkpoint for stylized image generation workflows.'
+        description:
+          'A Decoder-only finetune of the Flux1 VAE(Z-Image uses Flux 1 VAE), reducing oversharpening and jpeg artifacts of the original, helping anime art generation.'
       },
       {
         repoId: 'Anzhc/Noobai11-CLIP-L-and-BigG-Anime-Text-Encoders',
-        description: 'Anime-oriented CLIP-L and BigG text encoder bundle for NoobAI11 workflows.'
+        description:
+          "Special project testing text encoders in Noobai model, their performance in retrieval task, and finetuning them on an anime-specific dataset, as well as showcasing performance on the token count well beyond architectural limit of 77. (Refer to Post section for full research)"
       },
       {
         repoId: 'Anzhc/SDXL-Text-Encoder-Longer-CLIP-L',
-        description: 'SDXL text encoder variant extending the longer-context CLIP-L setup.'
+        description:
+          "Experimental finetune on smaller dataset, consisting of data only with 225 or more tokens, essentially pinning CLIP to 3+ chunks. Benchmarks show that CLIP is capable of retrieval far beyond it's limits, even at the range of 300 and even 400 tokens."
       }
     ]
   },
