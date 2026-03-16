@@ -125,41 +125,60 @@ const formatShortDate = (value: string) => shortDate.format(new Date(value));
           id="projects"
           title="Projects"
         >
-          <div class="project-section">
-            <div class="project-grid project-grid--slim">
-              <InfoCard v-for="project in projects.items" :key="project.id">
-                <a
-                  class="project-slim-card"
-                  :href="project.href"
-                  target="_blank"
-                  rel="noreferrer"
-                  :title="project.repoPath"
-                >
-                  <div class="project-slim-card__name">
-                    <h3>{{ project.name }}</h3>
-                    <p>{{ project.repoPath }}</p>
-                  </div>
-
-                  <div class="project-slim-card__stats">
-                    <span class="project-slim-card__value">
-                      {{ formatCompactNumber(project.monthlyDownloads) }}/month
-                    </span>
-                    <span class="project-slim-card__label">downloads</span>
-                  </div>
-                </a>
-              </InfoCard>
-            </div>
-
-            <div class="project-section__footer">
+          <div class="project-cluster">
+            <div class="project-cluster__header">
+              <h3>{{ projects.clusterTitle }}</h3>
               <span>Static snapshot {{ formatShortDate(projects.generatedAt) }}</span>
-              <a
-                :href="projects.moreHref"
-                target="_blank"
-                rel="noreferrer"
-              >
-                ...{{ projects.moreCount }} more on Hugging Face
-              </a>
             </div>
+
+            <InfoCard v-for="panel in projects.panels" :key="panel.id">
+              <div class="project-panel">
+                <div class="project-panel__header">
+                  <a
+                    class="project-panel__title"
+                    :href="panel.sourceHref"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {{ panel.title }}
+                  </a>
+
+                  <a
+                    v-if="panel.moreCount > 0"
+                    class="project-panel__more"
+                    :href="panel.moreHref"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    ...{{ panel.moreCount }} more
+                  </a>
+                </div>
+
+                <div class="project-panel__list">
+                  <a
+                    v-for="project in panel.items"
+                    :key="project.id"
+                    class="project-slim-card"
+                    :href="project.href"
+                    target="_blank"
+                    rel="noreferrer"
+                    :title="project.repoPath"
+                  >
+                    <div class="project-slim-card__name">
+                      <h4>{{ project.name }}</h4>
+                      <p>{{ project.repoPath }}</p>
+                    </div>
+
+                    <div class="project-slim-card__stats">
+                      <span class="project-slim-card__value">
+                        {{ formatCompactNumber(project.monthlyDownloads) }}/month
+                      </span>
+                      <span class="project-slim-card__label">downloads</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </InfoCard>
           </div>
         </SectionShell>
 
@@ -415,13 +434,90 @@ const formatShortDate = (value: string) => shortDate.format(new Date(value));
   gap: 1rem;
 }
 
-.project-section {
+.project-cluster {
+  position: relative;
   display: grid;
-  gap: 0.9rem;
+  gap: 1rem;
+  padding: 0.4rem 1.4rem;
 }
 
-.project-grid--slim {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.project-cluster::before,
+.project-cluster::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--border-strong) 72%, transparent) 11%,
+    color-mix(in srgb, var(--border-strong) 72%, transparent) 89%,
+    transparent 100%
+  );
+}
+
+.project-cluster::before {
+  left: 0;
+}
+
+.project-cluster::after {
+  right: 0;
+}
+
+.project-cluster__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+  color: var(--text-muted);
+}
+
+.project-cluster__header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.project-cluster__header span {
+  font-size: 0.82rem;
+}
+
+.project-panel {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1.05rem 1.1rem;
+}
+
+.project-panel__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.project-panel__title,
+.project-panel__more {
+  color: inherit;
+  text-decoration: none;
+}
+
+.project-panel__title {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.project-panel__more {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.project-panel__list {
+  display: grid;
 }
 
 .project-slim-card {
@@ -429,16 +525,26 @@ const formatShortDate = (value: string) => shortDate.format(new Date(value));
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 1rem;
-  padding: 0.95rem 1.1rem;
+  padding: 0.85rem 0;
   color: inherit;
   text-decoration: none;
+  border-top: 1px solid var(--border-soft);
+}
+
+.project-panel__list .project-slim-card:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.project-panel__list .project-slim-card:last-child {
+  padding-bottom: 0;
 }
 
 .project-slim-card__name {
   min-width: 0;
 }
 
-.project-slim-card__name h3 {
+.project-slim-card__name h4 {
   margin: 0;
   font-size: 1rem;
   line-height: 1.15;
@@ -475,20 +581,6 @@ const formatShortDate = (value: string) => shortDate.format(new Date(value));
   letter-spacing: 0.12em;
   line-height: 1;
   text-transform: uppercase;
-}
-
-.project-section__footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  color: var(--text-muted);
-  font-size: 0.84rem;
-}
-
-.project-section__footer a {
-  color: var(--text-primary);
-  font-weight: 700;
-  text-decoration: none;
 }
 
 .stack-grid,
@@ -683,7 +775,13 @@ const formatShortDate = (value: string) => shortDate.format(new Date(value));
     text-align: left;
   }
 
-  .project-section__footer {
+  .project-cluster {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .project-cluster__header,
+  .project-panel__header {
     flex-direction: column;
   }
 }

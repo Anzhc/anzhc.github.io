@@ -60,13 +60,19 @@ export interface ProjectItem {
   monthlyDownloads: number;
 }
 
-export interface ProjectsContent {
-  owner: string;
+export interface ProjectPanel {
+  id: string;
+  title: string;
   sourceHref: string;
   moreCount: number;
   moreHref: string;
-  generatedAt: string;
   items: ProjectItem[];
+}
+
+export interface ProjectsContent {
+  clusterTitle: string;
+  generatedAt: string;
+  panels: ProjectPanel[];
 }
 
 export interface EducationItem {
