@@ -11,7 +11,7 @@ export const githubProjects: ShowcaseCardItem[] = [
   {
     title: 'VT-Orchestrator',
     description:
-      'Comprehensive AI Vtuber hub, utilizing many LLMs to operate a Character, including thinking, speech, motion, memory, vision, hearing and reading. Includes Discord integration with server navigation, chat reading, DMs and voice chat. Utilizes an MCP-like command layer for execution of commands.',
+      'Comprehensive AI Vtuber hub, utilizing many LLMs to operate a Character, including thinking, speech, motion, memory, vision, hearing and reading. Includes Discord integration with server navigation, chat reading, DMs and voice chat. Utilizes an MCP-like layer for execution of commands.',
     href: 'https://github.com/Anzhc/VT-Orchestrator',
     linkLabel: 'GitHub'
   },

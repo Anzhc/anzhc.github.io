@@ -91,6 +91,12 @@ defineEmits<{
   color: var(--accent);
 }
 
+.sidebar-nav__link:hover,
+.sidebar-nav__link:focus-visible {
+  color: var(--text-primary);
+  transform: translateX(0.14rem);
+}
+
 .sidebar-nav__toggle {
   justify-self: start;
   margin-bottom: 0.35rem;
@@ -105,6 +111,19 @@ defineEmits<{
   background: var(--surface-raised);
   color: var(--text-primary);
   cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.sidebar-nav__toggle:hover,
+.sidebar-nav__toggle:focus-visible {
+  border-color: var(--border-strong);
+  background: color-mix(in srgb, var(--surface-raised) 90%, var(--surface-card));
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--bg) 65%, transparent);
 }
 
 .sidebar-nav__toggle-icon {

@@ -250,14 +250,18 @@ onBeforeUnmount(() => {
           title="Projects"
         >
           <div class="showcase-grid">
-            <InfoCard v-for="project in githubProjects" :key="project.title">
+            <InfoCard
+              v-for="project in githubProjects"
+              :key="project.title"
+              class="showcase-card showcase-card--interactive"
+            >
               <a
-                class="showcase-card showcase-card--link"
+                class="showcase-card__link"
                 :href="project.href"
                 target="_blank"
                 rel="noreferrer"
               >
-                <div class="showcase-card__inner">
+                <div class="showcase-card__body">
                   <div class="showcase-card__header">
                     <h3>{{ project.title }}</h3>
                   </div>
@@ -485,6 +489,37 @@ onBeforeUnmount(() => {
   color: var(--text-primary);
 }
 
+.hero__action-link--button,
+.project-slim-card,
+.project-group__more,
+.showcase-card--interactive {
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.hero__action-link--button:hover,
+.hero__action-link--button:focus-visible,
+.project-slim-card:hover,
+.project-slim-card:focus-visible,
+.showcase-card--interactive:hover,
+.showcase-card--interactive:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--bg) 65%, transparent);
+}
+
+.hero__action-link--button:hover,
+.hero__action-link--button:focus-visible,
+.project-slim-card:hover,
+.project-slim-card:focus-visible,
+.showcase-card--interactive:hover,
+.showcase-card--interactive:focus-within {
+  border-color: var(--border-strong);
+  background: color-mix(in srgb, var(--surface-card) 94%, var(--surface-raised));
+}
+
 .hero__action-buttons {
   display: grid;
   gap: 0.75rem;
@@ -621,6 +656,12 @@ onBeforeUnmount(() => {
   white-space: nowrap;
 }
 
+.project-group__more:hover,
+.project-group__more:focus-visible {
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
 .project-section__footer {
   display: flex;
   justify-content: flex-end;
@@ -636,17 +677,21 @@ onBeforeUnmount(() => {
 
 .showcase-card {
   display: grid;
-  width: 100%;
   height: 100%;
+}
+
+.showcase-card__link {
+  display: grid;
+  min-height: 100%;
   color: inherit;
   text-decoration: none;
 }
 
-.showcase-card--link {
-  min-height: 100%;
+.showcase-card__link:focus-visible {
+  outline: none;
 }
 
-.showcase-card__inner {
+.showcase-card__body {
   display: grid;
   gap: 0.85rem;
   min-height: 100%;
