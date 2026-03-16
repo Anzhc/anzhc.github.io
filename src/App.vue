@@ -580,6 +580,7 @@ onBeforeUnmount(() => {
 
 .project-groups {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.35rem;
 }
 
@@ -636,11 +637,13 @@ onBeforeUnmount(() => {
 .project-group__panel {
   display: grid;
   gap: 0.9rem;
+  align-content: start;
 }
 
 .project-tabs {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
+  grid-auto-rows: 1fr;
   gap: 0.85rem;
 }
 
@@ -725,6 +728,7 @@ onBeforeUnmount(() => {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 1rem;
+  min-height: 7.2rem;
   padding: 0.9rem 1rem;
   color: inherit;
   text-decoration: none;
@@ -927,6 +931,10 @@ onBeforeUnmount(() => {
   .hero {
     grid-template-columns: minmax(0, 1fr) auto 13rem;
   }
+
+  .project-groups {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 860px) {
@@ -966,10 +974,6 @@ onBeforeUnmount(() => {
 
   .project-slim-card__stats {
     text-align: left;
-  }
-
-  .project-tabs {
-    grid-template-columns: 1fr;
   }
 
   .showcase-grid {
