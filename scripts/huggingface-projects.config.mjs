@@ -14,6 +14,22 @@ export const profileConfigs = [
         repoId: 'Anzhc/Anzhcs_YOLOs',
         description:
           'Collection of YOLO models, encompassing detection, segmentation, classification and their downstream usage. Includes models made specifically for Adetailer, scoring models, narrow taggers and other utility applications.'
+      },
+      {
+        repoId: 'Anzhc/MS-LC-EQ-D-VR_VAE',
+        description: 'VAE release for the MS-LC-EQ-D-VR model line.'
+      },
+      {
+        repoId: 'Anzhc/Z-Image_Anime_VAE',
+        description: 'Anime-focused VAE checkpoint for stylized image generation workflows.'
+      },
+      {
+        repoId: 'Anzhc/Noobai11-CLIP-L-and-BigG-Anime-Text-Encoders',
+        description: 'Anime-oriented CLIP-L and BigG text encoder bundle for NoobAI11 workflows.'
+      },
+      {
+        repoId: 'Anzhc/SDXL-Text-Encoder-Longer-CLIP-L',
+        description: 'SDXL text encoder variant extending the longer-context CLIP-L setup.'
       }
     ]
   },
