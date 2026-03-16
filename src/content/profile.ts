@@ -26,7 +26,9 @@ export const profile: Profile = {
 
 export const navItems: NavItem[] = [
   { id: 'about', label: 'About' },
+  { id: 'models', label: 'Models' },
   { id: 'projects', label: 'Projects' },
+  { id: 'posts', label: 'Posts' },
   { id: 'education', label: 'Education' },
   { id: 'experience', label: 'Experience' }
 ];

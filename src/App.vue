@@ -5,7 +5,16 @@ import SectionShell from './components/SectionShell.vue';
 import SidebarNav from './components/SidebarNav.vue';
 import TagList from './components/TagList.vue';
 import ThemeToggle from './components/ThemeToggle.vue';
-import { about, education, experience, navItems, profile, projects } from './content';
+import {
+  about,
+  education,
+  experience,
+  githubProjects,
+  navItems,
+  posts,
+  profile,
+  projects as models
+} from './content';
 import type { Theme } from './content';
 
 const themeKey = 'resume-theme';
@@ -181,12 +190,12 @@ onBeforeUnmount(() => {
         </SectionShell>
 
         <SectionShell
-          id="projects"
-          title="Projects"
+          id="models"
+          title="Models"
         >
           <div class="project-section">
             <div class="project-groups">
-            <section v-for="group in projects.groups" :key="group.id" class="project-group">
+            <section v-for="group in models.groups" :key="group.id" class="project-group">
               <div class="project-group__header">
                 <h3>{{ group.title }}</h3>
               </div>
@@ -231,8 +240,50 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="project-section__footer">
-              <span>HF static snapshot {{ formatShortDate(projects.generatedAt) }}</span>
+              <span>HF static snapshot {{ formatShortDate(models.generatedAt) }}</span>
             </div>
+          </div>
+        </SectionShell>
+
+        <SectionShell
+          id="projects"
+          title="Projects"
+        >
+          <div class="showcase-grid">
+            <InfoCard v-for="project in githubProjects" :key="project.title">
+              <div class="showcase-card">
+                <div class="showcase-card__header">
+                  <h3>{{ project.title }}</h3>
+                  <a
+                    v-if="project.href"
+                    :href="project.href"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {{ project.linkLabel ?? 'Open' }}
+                  </a>
+                </div>
+
+                <p>{{ project.description }}</p>
+              </div>
+            </InfoCard>
+          </div>
+        </SectionShell>
+
+        <SectionShell
+          id="posts"
+          title="Posts"
+        >
+          <div class="showcase-grid">
+            <InfoCard v-for="post in posts" :key="post.title">
+              <div class="showcase-card">
+                <div class="showcase-card__header">
+                  <h3>{{ post.title }}</h3>
+                </div>
+
+                <p>{{ post.description }}</p>
+              </div>
+            </InfoCard>
           </div>
         </SectionShell>
 
@@ -578,6 +629,48 @@ onBeforeUnmount(() => {
   font-size: 0.76rem;
 }
 
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.showcase-card {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1.2rem 1.25rem;
+}
+
+.showcase-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.showcase-card__header h3,
+.showcase-card p {
+  margin: 0;
+}
+
+.showcase-card__header h3 {
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.showcase-card__header a {
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.showcase-card p {
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
 .project-slim-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -827,6 +920,10 @@ onBeforeUnmount(() => {
   }
 
   .project-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .showcase-grid {
     grid-template-columns: 1fr;
   }
 

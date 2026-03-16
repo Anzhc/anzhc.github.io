@@ -74,6 +74,13 @@ export interface ProjectsContent {
   groups: ProjectGroup[];
 }
 
+export interface ShowcaseCardItem {
+  title: string;
+  description: string;
+  href?: string;
+  linkLabel?: string;
+}
+
 export interface EducationItem {
   institution: string;
   program: string;
