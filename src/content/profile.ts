@@ -13,7 +13,7 @@ export const profile: Profile = {
     'Frontend engineer focused on clean product execution, durable UI systems, and interfaces that stay readable under real-world complexity.',
   availability: 'Open to staff-level frontend, design systems, and product engineering roles',
   primaryLinks: [
-    { label: 'Email', href: 'mailto:email@mai.mail' },
+    { label: 'Email', href: 'mailto:anzhc1@gmail.com' },
     { label: 'GitHub', href: 'https://github.com/yourname', external: true },
     { label: 'Hugging Face', href: 'https://huggingface.co/yourname', external: true }
   ],
@@ -27,7 +27,8 @@ export const profile: Profile = {
 export const navItems: NavItem[] = [
   { id: 'about', label: 'About' },
   { id: 'models', label: 'Models' },
-  { id: 'projects', label: 'Projects' },
+  { id: 'projects', label: 'Open Projects' },
+  { id: 'private-projects', label: 'Private Projects' },
   { id: 'posts', label: 'Posts' },
   { id: 'education', label: 'Education' },
   { id: 'experience', label: 'Experience' }

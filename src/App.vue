@@ -11,6 +11,7 @@ import {
   experience,
   githubProjects,
   navItems,
+  privateProjects,
   posts,
   profile,
   projects as models
@@ -154,7 +155,7 @@ onBeforeUnmount(() => {
                 class="hero__action-link hero__action-link--email"
                 :href="heroEmailLink.href"
               >
-                <span class="hero__action-value">email@mai.mail</span>
+                <span class="hero__action-value">anzhc1@gmail.com</span>
               </a>
             </div>
 
@@ -250,7 +251,7 @@ onBeforeUnmount(() => {
 
         <SectionShell
           id="projects"
-          title="Projects"
+          title="Open Projects"
         >
           <div class="showcase-grid">
             <InfoCard
@@ -272,6 +273,25 @@ onBeforeUnmount(() => {
                   <p>{{ project.description }}</p>
                 </div>
               </a>
+            </InfoCard>
+          </div>
+        </SectionShell>
+
+        <SectionShell
+          id="private-projects"
+          title="Private Projects"
+        >
+          <div class="showcase-grid">
+            <InfoCard v-for="project in privateProjects" :key="project.title">
+              <div class="showcase-card">
+                <div class="showcase-card__body">
+                  <div class="showcase-card__header">
+                    <h3>{{ project.title }}</h3>
+                  </div>
+
+                  <p>{{ project.description }}</p>
+                </div>
+              </div>
             </InfoCard>
           </div>
         </SectionShell>

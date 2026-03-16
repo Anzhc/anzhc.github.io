@@ -3,6 +3,7 @@ export { contact } from './contact';
 export { education } from './education';
 export { experience } from './experience';
 export { githubProjects } from './githubProjects';
+export { privateProjects } from './privateProjects';
 export { profile, navItems } from './profile';
 export { posts } from './posts';
 export { projects } from './projects';
