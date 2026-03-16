@@ -211,17 +211,20 @@ onBeforeUnmount(() => {
                     rel="noreferrer"
                     :title="project.repoPath"
                   >
-                    <div class="project-slim-card__name">
-                      <h4>{{ project.name }}</h4>
-                      <p>{{ project.repoPath }}</p>
+                    <div class="project-slim-card__top">
+                      <div class="project-slim-card__name">
+                        <h4>{{ project.name }}</h4>
+                      </div>
+
+                      <div class="project-slim-card__stats">
+                        <span class="project-slim-card__value">
+                          {{ formatCompactNumber(project.monthlyDownloads) }}/month
+                        </span>
+                        <span class="project-slim-card__label">downloads</span>
+                      </div>
                     </div>
 
-                    <div class="project-slim-card__stats">
-                      <span class="project-slim-card__value">
-                        {{ formatCompactNumber(project.monthlyDownloads) }}/month
-                      </span>
-                      <span class="project-slim-card__label">downloads</span>
-                    </div>
+                    <p class="project-slim-card__description">{{ project.description }}</p>
                   </a>
                 </div>
 
@@ -580,7 +583,6 @@ onBeforeUnmount(() => {
 
 .project-groups {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.35rem;
 }
 
@@ -642,7 +644,7 @@ onBeforeUnmount(() => {
 
 .project-tabs {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-rows: 1fr;
   gap: 0.85rem;
 }
@@ -725,16 +727,22 @@ onBeforeUnmount(() => {
 
 .project-slim-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 1rem;
-  min-height: 7.2rem;
+  gap: 0.8rem;
+  align-content: start;
+  min-height: 8.4rem;
   padding: 0.9rem 1rem;
   color: inherit;
   text-decoration: none;
   border: 1px solid var(--border-soft);
   border-radius: 0.35rem;
   background: color-mix(in srgb, var(--surface-card) 88%, transparent);
+}
+
+.project-slim-card__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 1rem;
 }
 
 .project-slim-card__name {
@@ -747,14 +755,11 @@ onBeforeUnmount(() => {
   line-height: 1.15;
 }
 
-.project-slim-card__name p {
-  margin: 0.35rem 0 0;
-  color: var(--text-muted);
-  font-family: Consolas, 'Courier New', monospace;
-  font-size: 0.76rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.project-slim-card__description {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.45;
 }
 
 .project-slim-card__stats {
@@ -931,10 +936,6 @@ onBeforeUnmount(() => {
   .hero {
     grid-template-columns: minmax(0, 1fr) auto 13rem;
   }
-
-  .project-groups {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 860px) {
@@ -968,8 +969,11 @@ onBeforeUnmount(() => {
   }
 
   .project-slim-card {
-    grid-template-columns: 1fr;
     align-items: start;
+  }
+
+  .project-slim-card__top {
+    grid-template-columns: 1fr;
   }
 
   .project-slim-card__stats {

@@ -57,6 +57,7 @@ export interface ProjectItem {
   name: string;
   repoPath: string;
   href: string;
+  description: string;
   monthlyDownloads: number;
 }
 

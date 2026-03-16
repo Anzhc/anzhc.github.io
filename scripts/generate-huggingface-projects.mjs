@@ -1,36 +1,7 @@
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-const profileConfigs = [
-  {
-    id: 'anzhc',
-    title: 'Personal',
-    profileHref: 'https://huggingface.co/Anzhc',
-    moreHref: 'https://huggingface.co/Anzhc/models',
-    fetchMode: 'top',
-    featuredCount: 2
-  },
-  {
-    id: 'cabal-research',
-    title: 'Cabal Research',
-    profileHref: 'https://huggingface.co/CabalResearch',
-    moreHref: 'https://huggingface.co/CabalResearch/models',
-    fetchMode: 'pinned',
-    pinnedRepoIds: [
-      'CabalResearch/NoobAI-Flux2VAE-RectifiedFlow-0.3',
-      'CabalResearch/NoobAI-Flux2VAE-RectifiedFlow'
-    ]
-  },
-  {
-    id: 'chenkin-rf',
-    title: 'ChenkinRF',
-    profileHref: 'https://huggingface.co/ChenkinRF',
-    moreHref: 'https://huggingface.co/ChenkinRF/models',
-    fetchMode: 'top',
-    featuredCount: 2
-  }
-];
+import { profileConfigs } from './huggingface-projects.config.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '..');
@@ -62,8 +33,8 @@ const fetchJson = async (url) => {
   return response.json();
 };
 
-const normalizeModel = (model) => {
-  const repoId = String(model.id);
+const normalizeModel = (featuredItem, model) => {
+  const repoId = featuredItem.repoId;
   const repoName = repoId.split('/').at(-1) ?? repoId;
 
   return {
@@ -71,7 +42,8 @@ const normalizeModel = (model) => {
     name: repoName,
     repoPath: repoId,
     href: `https://huggingface.co/${repoId}`,
-    monthlyDownloads: Number(model.downloads ?? 0)
+    description: featuredItem.description,
+    monthlyDownloads: Number(model?.downloads ?? 0)
   };
 };
 
@@ -83,40 +55,25 @@ const fetchAuthorModels = async (config) => {
   return fetchJson(apiUrl);
 };
 
-const buildTopGroup = (config, models) => {
-  return {
-    id: config.id,
-    title: config.title,
-    sourceHref: config.profileHref,
-    moreCount: Math.max(models.length - config.featuredCount, 0),
-    moreHref: config.moreHref,
-    items: models.slice(0, config.featuredCount).map(normalizeModel)
-  };
-};
-
-const buildPinnedGroup = (config, models) => {
+const buildGroup = (config, models) => {
   const modelMap = new Map(models.map((model) => [String(model.id), model]));
+
   return {
     id: config.id,
     title: config.title,
     sourceHref: config.profileHref,
-    moreCount: Math.max(models.length - config.pinnedRepoIds.length, 0),
+    moreCount: Math.max(models.length - config.featuredItems.length, 0),
     moreHref: config.moreHref,
-    items: config.pinnedRepoIds
-      .map((repoId) => modelMap.get(repoId))
-      .filter(Boolean)
-      .map(normalizeModel)
+    items: config.featuredItems.map((featuredItem) =>
+      normalizeModel(featuredItem, modelMap.get(featuredItem.repoId))
+    )
   };
 };
 
 const fetchProjects = async () => {
   const groups = await Promise.all(
     profileConfigs.map((config) =>
-      fetchAuthorModels(config).then((models) =>
-        config.fetchMode === 'pinned'
-          ? buildPinnedGroup(config, models)
-          : buildTopGroup(config, models)
-      )
+      fetchAuthorModels(config).then((models) => buildGroup(config, models))
     )
   );
 
