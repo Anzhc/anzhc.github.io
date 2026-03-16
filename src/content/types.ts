@@ -21,6 +21,8 @@ export interface Profile {
   title: string;
   location: string;
   intro: string;
+  avatarImage: string;
+  avatarAlt: string;
   summary: string;
   availability: string;
   primaryLinks: ActionLink[];

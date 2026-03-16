@@ -34,10 +34,14 @@ const toggleTheme = () => {
 const heroActions = computed(() =>
   profile.primaryLinks.map((link) => ({
     ...link,
+    isEmail: link.href.startsWith('mailto:'),
     rel: link.external ? 'noopener noreferrer' : undefined,
     target: link.external ? '_blank' : undefined
   }))
 );
+
+const heroEmailLink = computed(() => heroActions.value.find((link) => link.isEmail));
+const heroSocialLinks = computed(() => heroActions.value.filter((link) => !link.isEmail));
 
 const contactLinks = computed(() =>
   contact.links.map((link) => ({
@@ -66,66 +70,48 @@ const contactLinks = computed(() =>
             <h1>{{ profile.name }}</h1>
             <p class="hero__title">{{ profile.title }}</p>
             <p class="hero__intro">{{ profile.intro }}</p>
+          </div>
 
-            <div class="hero__actions">
+          <div class="hero__actions">
+            <div class="hero__action-email">
               <a
-                v-for="link in heroActions"
+                v-if="heroEmailLink"
+                class="hero__action-link hero__action-link--email"
+                :href="heroEmailLink.href"
+              >
+                <span class="hero__action-value">email@mai.mail</span>
+              </a>
+            </div>
+
+            <div class="hero__action-buttons">
+              <a
+                v-for="link in heroSocialLinks"
                 :key="link.label"
-                class="button"
-                :class="{ 'button--ghost': link.external }"
+                class="hero__action-link hero__action-link--button"
                 :href="link.href"
                 :target="link.target"
                 :rel="link.rel"
               >
-                {{ link.label }}
-              </a>
-            </div>
-          </div>
-
-          <div class="hero__aside">
-            <InfoCard>
-              <div class="summary-card">
-                <p class="summary-card__label">Profile Summary</p>
-                <p class="summary-card__text">{{ profile.summary }}</p>
-                <div class="summary-card__meta">
-                  <span>{{ profile.location }}</span>
-                  <span>{{ profile.availability }}</span>
-                </div>
+                <span class="hero__action-value">{{ link.label }}</span>
+                </a>
               </div>
-            </InfoCard>
+            </div>
 
-            <div class="stats-grid">
-              <InfoCard v-for="stat in profile.stats" :key="stat.label">
-                <div class="stat-card">
-                  <strong>{{ stat.value }}</strong>
-                  <span>{{ stat.label }}</span>
-                </div>
-              </InfoCard>
+          <div class="hero__avatar">
+            <div class="hero__avatar-circle">
+              <img :src="profile.avatarImage" :alt="profile.avatarAlt" />
             </div>
           </div>
         </section>
 
         <SectionShell id="about" title="About">
-          <div class="two-column">
-            <InfoCard>
-              <div class="copy-block">
-                <p v-for="paragraph in about.paragraphs" :key="paragraph">
-                  {{ paragraph }}
-                </p>
-              </div>
-            </InfoCard>
-
-            <InfoCard>
-              <div class="highlights-block">
-                <p class="card-label">Working Style</p>
-                <ul class="check-list">
-                  <li v-for="highlight in about.highlights" :key="highlight">
-                    {{ highlight }}
-                  </li>
-                </ul>
-              </div>
-            </InfoCard>
-          </div>
+          <InfoCard>
+            <div class="copy-block">
+              <p v-for="paragraph in about.paragraphs" :key="paragraph">
+                {{ paragraph }}
+              </p>
+            </div>
+          </InfoCard>
         </SectionShell>
 
         <SectionShell
@@ -309,15 +295,43 @@ const contactLinks = computed(() =>
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.95fr);
+  grid-template-columns: minmax(0, 1fr) auto 16rem;
+  grid-template-areas:
+    'copy actions avatar';
+  align-items: center;
   gap: 1.5rem;
   padding: 1.35rem 0 0;
 }
 
-.hero__copy,
-.hero__aside {
+.hero__copy {
+  grid-area: copy;
   display: grid;
   gap: 1rem;
+}
+
+.hero__avatar {
+  grid-area: avatar;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hero__avatar-circle {
+  width: min(16rem, 34vw);
+  aspect-ratio: 1;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--surface-raised) 88%, var(--bg));
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .hero h1 {
@@ -345,13 +359,62 @@ const contactLinks = computed(() =>
 }
 
 .hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-top: 0.6rem;
+  grid-area: actions;
+  display: grid;
+  gap: 0.9rem;
+  align-content: center;
+  justify-items: center;
+  min-width: 10rem;
 }
 
-.summary-card,
+.hero__action-email {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.hero__action-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.96rem;
+}
+
+.hero__action-link--email {
+  color: var(--text-primary);
+  justify-self: start;
+}
+
+.hero__action-link--button {
+  align-items: center;
+  min-height: 2.9rem;
+  padding: 0.72rem 1rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 0.6rem;
+  background: var(--surface-card);
+  color: var(--text-primary);
+}
+
+.hero__action-buttons {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+}
+
+.hero__action-label {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero__action-value {
+  font-weight: 600;
+}
+
 .timeline-card,
 .project-card,
 .education-card,
@@ -364,7 +427,6 @@ const contactLinks = computed(() =>
   padding: 1.35rem;
 }
 
-.summary-card__label,
 .card-label {
   margin: 0;
   color: var(--text-muted);
@@ -372,44 +434,6 @@ const contactLinks = computed(() =>
   letter-spacing: 0.14em;
   font-size: 0.72rem;
   font-weight: 800;
-}
-
-.summary-card__text {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.8;
-  color: var(--text-secondary);
-}
-
-.summary-card__meta {
-  display: grid;
-  gap: 0.55rem;
-  color: var(--text-primary);
-  font-size: 0.94rem;
-  font-weight: 700;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.stat-card {
-  display: grid;
-  gap: 0.35rem;
-  padding: 1rem;
-}
-
-.stat-card strong {
-  font-size: 2rem;
-  line-height: 1;
-  letter-spacing: -0.05em;
-}
-
-.stat-card span {
-  color: var(--text-secondary);
-  line-height: 1.5;
 }
 
 .two-column,
@@ -575,15 +599,23 @@ const contactLinks = computed(() =>
   }
 
   .hero {
-    grid-template-columns: 1fr;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr) auto 13rem;
   }
 }
 
 @media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'copy'
+      'actions'
+      'avatar';
+  }
+
+  .hero__avatar {
+    justify-content: flex-start;
+  }
+
   .two-column,
   .contact-grid,
   .skills-grid,
@@ -611,14 +643,31 @@ const contactLinks = computed(() =>
     max-width: 100%;
   }
 
-  .stats-grid {
-    grid-template-columns: 1fr;
+  .hero__avatar-circle {
+    width: min(12rem, 52vw);
   }
 
   .hero__actions,
   .project-card__links {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
+  }
+
+  .hero__actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  .hero__action-email,
+  .hero__action-buttons {
+    width: 100%;
+  }
+
+  .hero__action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .contact-links__item {
