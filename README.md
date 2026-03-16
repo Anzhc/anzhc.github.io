@@ -68,11 +68,18 @@ All user-editable content lives in `src/content/` and is split by section:
 - `src/content/about.ts`
 - `src/content/skills.ts`
 - `src/content/experience.ts`
-- `src/content/projects.ts`
 - `src/content/education.ts`
 - `src/content/contact.ts`
 
-Update those files to change your name, bio, links, skills, work history, projects, education, and contact details.
+Update those files to change your name, bio, links, skills, work history, education, and contact details.
+
+`src/content/projects.ts` is generated from the Hugging Face profile configured in `scripts/generate-huggingface-projects.mjs`. Refresh it manually with:
+
+```powershell
+npm run refresh:projects
+```
+
+It is not meant to be edited by hand and is regenerated automatically before `npm run dev` and `npm run build`.
 
 ## Base path setup for GitHub Pages
 
@@ -156,11 +163,11 @@ Push to `main`, or manually run the workflow from the `Actions` tab.
 
 ## How the included workflow works
 
-On each push to `main`, GitHub Actions will:
+On each push to `main`, and once per day on the scheduled workflow, GitHub Actions will:
 
 1. Check out the repository
 2. Install dependencies with `npm ci`
-3. Build the site with `npm run build`
+3. Refresh the static Hugging Face projects snapshot during `npm run build`
 4. Upload the `dist/` folder as the Pages artifact
 5. Deploy the artifact to GitHub Pages
 
@@ -181,6 +188,9 @@ If you want GitHub Pages to serve a committed `CNAME` file, add `public/CNAME` w
 
 ```json
 {
+  "refresh:projects": "node scripts/generate-huggingface-projects.mjs",
+  "predev": "npm run refresh:projects",
+  "prebuild": "npm run refresh:projects",
   "dev": "vite",
   "build": "vite build",
   "preview": "vite preview"

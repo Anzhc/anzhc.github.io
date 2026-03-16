@@ -15,6 +15,7 @@ export type {
   NavItem,
   Profile,
   ProjectItem,
+  ProjectsContent,
   SkillGroup,
   StatItem,
   Theme

@@ -53,12 +53,20 @@ export interface ExperienceItem {
 }
 
 export interface ProjectItem {
+  id: string;
   name: string;
-  blurb: string;
-  description: string;
-  links: ActionLink[];
-  stack: string[];
-  highlights: string[];
+  repoPath: string;
+  href: string;
+  monthlyDownloads: number;
+}
+
+export interface ProjectsContent {
+  owner: string;
+  sourceHref: string;
+  moreCount: number;
+  moreHref: string;
+  generatedAt: string;
+  items: ProjectItem[];
 }
 
 export interface EducationItem {

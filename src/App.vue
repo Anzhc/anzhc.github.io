@@ -43,6 +43,20 @@ const heroActions = computed(() =>
 const heroEmailLink = computed(() => heroActions.value.find((link) => link.isEmail));
 const heroSocialLinks = computed(() => heroActions.value.filter((link) => !link.isEmail));
 
+const compactNumber = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 1,
+  notation: 'compact'
+});
+
+const shortDate = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric'
+});
+
+const formatCompactNumber = (value: number) => compactNumber.format(value);
+const formatShortDate = (value: string) => shortDate.format(new Date(value));
+
 </script>
 
 <template>
@@ -111,38 +125,41 @@ const heroSocialLinks = computed(() => heroActions.value.filter((link) => !link.
           id="projects"
           title="Projects"
         >
-          <div class="project-grid">
-            <InfoCard v-for="project in projects" :key="project.name">
-              <div class="project-card">
-                <div class="project-card__header">
-                  <div>
+          <div class="project-section">
+            <div class="project-grid project-grid--slim">
+              <InfoCard v-for="project in projects.items" :key="project.id">
+                <a
+                  class="project-slim-card"
+                  :href="project.href"
+                  target="_blank"
+                  rel="noreferrer"
+                  :title="project.repoPath"
+                >
+                  <div class="project-slim-card__name">
                     <h3>{{ project.name }}</h3>
-                    <p class="project-card__blurb">{{ project.blurb }}</p>
+                    <p>{{ project.repoPath }}</p>
                   </div>
 
-                  <div class="project-card__links">
-                    <a
-                      v-for="link in project.links"
-                      :key="`${project.name}-${link.label}`"
-                      :href="link.href"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {{ link.label }}
-                    </a>
+                  <div class="project-slim-card__stats">
+                    <span class="project-slim-card__value">
+                      {{ formatCompactNumber(project.monthlyDownloads) }}/month
+                    </span>
+                    <span class="project-slim-card__label">downloads</span>
                   </div>
-                </div>
+                </a>
+              </InfoCard>
+            </div>
 
-                <p class="card-copy">{{ project.description }}</p>
-                <TagList :items="project.stack" accent />
-
-                <ul class="check-list">
-                  <li v-for="highlight in project.highlights" :key="highlight">
-                    {{ highlight }}
-                  </li>
-                </ul>
-              </div>
-            </InfoCard>
+            <div class="project-section__footer">
+              <span>Static snapshot {{ formatShortDate(projects.generatedAt) }}</span>
+              <a
+                :href="projects.moreHref"
+                target="_blank"
+                rel="noreferrer"
+              >
+                ...{{ projects.moreCount }} more on Hugging Face
+              </a>
+            </div>
           </div>
         </SectionShell>
 
@@ -398,6 +415,82 @@ const heroSocialLinks = computed(() => heroActions.value.filter((link) => !link.
   gap: 1rem;
 }
 
+.project-section {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.project-grid--slim {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.project-slim-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.95rem 1.1rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.project-slim-card__name {
+  min-width: 0;
+}
+
+.project-slim-card__name h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.project-slim-card__name p {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 0.76rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-slim-card__stats {
+  display: grid;
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  font-weight: 800;
+  gap: 0.22rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.project-slim-card__value {
+  line-height: 1;
+}
+
+.project-slim-card__label {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.project-section__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+}
+
+.project-section__footer a {
+  color: var(--text-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
 .stack-grid,
 .education-grid {
   display: grid;
@@ -579,6 +672,19 @@ const heroSocialLinks = computed(() => heroActions.value.filter((link) => !link.
 
   .timeline-card__meta {
     text-align: left;
+  }
+
+  .project-slim-card {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .project-slim-card__stats {
+    text-align: left;
+  }
+
+  .project-section__footer {
+    flex-direction: column;
   }
 }
 
