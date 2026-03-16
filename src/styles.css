@@ -1,0 +1,120 @@
+:root {
+  --font-sans: 'Inter', 'Segoe UI', sans-serif;
+  --font-display: 'Electrolize', 'Segoe UI', sans-serif;
+  --content-width: min(1120px, calc(100vw - 2rem));
+}
+
+:root[data-theme='dark'] {
+  --bg: #06090d;
+  --surface-header: #0b1218;
+  --surface-card: #0d141a;
+  --surface-raised: #101920;
+  --surface-elevated: #d9e7e2;
+  --surface-muted: #0f1a21;
+  --text-primary: #e6efeb;
+  --text-secondary: #a8bab6;
+  --text-muted: #6f8785;
+  --border-soft: #183038;
+  --border-strong: #234956;
+  --accent: #3f8a8d;
+  --accent-strong: #77b4b0;
+}
+
+:root[data-theme='light'] {
+  --bg: #dbe2df;
+  --surface-header: #eef2ef;
+  --surface-card: #f4f7f5;
+  --surface-raised: #edf2f0;
+  --surface-elevated: #0b1519;
+  --surface-muted: #e5ece9;
+  --text-primary: #112126;
+  --text-secondary: #355057;
+  --text-muted: #5f7879;
+  --border-soft: #bfd0cd;
+  --border-strong: #8eaca8;
+  --accent: #2c6d72;
+  --accent-strong: #1f565a;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: var(--font-sans);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 96%, #000) 0%, var(--bg) 100%);
+  color: var(--text-primary);
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.site-shell {
+  position: relative;
+  padding: 0 0 1rem;
+}
+
+.container {
+  width: var(--content-width);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.8rem 1.1rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.button--ghost {
+  background: var(--surface-card);
+  border-color: var(--border-soft);
+  color: var(--text-secondary);
+}
+
+code {
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 0.94em;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --content-width: min(1120px, calc(100vw - 1.2rem));
+  }
+}
