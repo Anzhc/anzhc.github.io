@@ -251,21 +251,20 @@ onBeforeUnmount(() => {
         >
           <div class="showcase-grid">
             <InfoCard v-for="project in githubProjects" :key="project.title">
-              <div class="showcase-card">
-                <div class="showcase-card__header">
-                  <h3>{{ project.title }}</h3>
-                  <a
-                    v-if="project.href"
-                    :href="project.href"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {{ project.linkLabel ?? 'Open' }}
-                  </a>
-                </div>
+              <a
+                class="showcase-card showcase-card--link"
+                :href="project.href"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <div class="showcase-card__inner">
+                  <div class="showcase-card__header">
+                    <h3>{{ project.title }}</h3>
+                  </div>
 
-                <p>{{ project.description }}</p>
-              </div>
+                  <p>{{ project.description }}</p>
+                </div>
+              </a>
             </InfoCard>
           </div>
         </SectionShell>
@@ -637,7 +636,20 @@ onBeforeUnmount(() => {
 
 .showcase-card {
   display: grid;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.showcase-card--link {
+  min-height: 100%;
+}
+
+.showcase-card__inner {
+  display: grid;
   gap: 0.85rem;
+  min-height: 100%;
   padding: 1.2rem 1.25rem;
 }
 
@@ -656,14 +668,6 @@ onBeforeUnmount(() => {
 .showcase-card__header h3 {
   font-size: 1.1rem;
   line-height: 1.2;
-}
-
-.showcase-card__header a {
-  color: var(--text-secondary);
-  font-size: 0.84rem;
-  font-weight: 700;
-  text-decoration: none;
-  white-space: nowrap;
 }
 
 .showcase-card p {

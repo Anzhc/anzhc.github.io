@@ -2,17 +2,31 @@ import type { ShowcaseCardItem } from './types';
 
 export const githubProjects: ShowcaseCardItem[] = [
   {
-    title: 'GitHub Project One',
+    title: 'GPOST',
     description:
-      'Placeholder for a featured repository card with a concise summary of what it does and why it matters.',
-    href: 'https://github.com/yourname/project-one',
+      'Simple PyQt interface, utilizing Computer Vision models for detection and segmentation of the text in selected area, passing it to LLM through API, and rendering translation right on top of the original text area.',
+    href: 'https://github.com/Anzhc/GPOST',
     linkLabel: 'GitHub'
   },
   {
-    title: 'GitHub Project Two',
+    title: 'VT-Orchestrator',
     description:
-      'Placeholder for another repository with room for a short product-oriented description and a link out.',
-    href: 'https://github.com/yourname/project-two',
+      'Comprehensive AI Vtuber hub, utilizing many LLMs to operate a Character, including thinking, speech, motion, memory, vision, hearing and reading. Includes Discord integration with server navigation, chat reading, DMs and voice chat. Utilizes an MCP-like command layer for execution of commands.',
+    href: 'https://github.com/Anzhc/VT-Orchestrator',
+    linkLabel: 'GitHub'
+  },
+  {
+    title: 'Timestep Attention',
+    description:
+      'A light research project targetting dynamic timestep distributions based on the practical timestep loss landscape of Diffusion Models. Additionally repo includes few other things.',
+    href: 'https://github.com/Anzhc/Timestep-Attention-and-other-shenanigans',
+    linkLabel: 'GitHub'
+  },
+  {
+    title: '...And other projects',
+    description:
+      'Additional experiments, tools, and smaller repositories are available on the full GitHub profile.',
+    href: 'https://github.com/Anzhc',
     linkLabel: 'GitHub'
   }
 ];
