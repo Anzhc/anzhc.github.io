@@ -60,7 +60,7 @@ export interface ProjectItem {
   monthlyDownloads: number;
 }
 
-export interface ProjectPanel {
+export interface ProjectGroup {
   id: string;
   title: string;
   sourceHref: string;
@@ -70,9 +70,8 @@ export interface ProjectPanel {
 }
 
 export interface ProjectsContent {
-  clusterTitle: string;
   generatedAt: string;
-  panels: ProjectPanel[];
+  groups: ProjectGroup[];
 }
 
 export interface EducationItem {

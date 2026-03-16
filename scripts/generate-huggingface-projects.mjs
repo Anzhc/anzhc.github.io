@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const profileConfigs = [
   {
     id: 'anzhc',
-    title: 'Anzhc',
+    title: 'Personal',
     profileHref: 'https://huggingface.co/Anzhc',
     moreHref: 'https://huggingface.co/Anzhc/models',
     fetchMode: 'top',
@@ -17,7 +17,10 @@ const profileConfigs = [
     profileHref: 'https://huggingface.co/CabalResearch',
     moreHref: 'https://huggingface.co/CabalResearch/models',
     fetchMode: 'pinned',
-    pinnedRepoId: 'CabalResearch/NoobAI-Flux2VAE-RectifiedFlow-0.3'
+    pinnedRepoIds: [
+      'CabalResearch/NoobAI-Flux2VAE-RectifiedFlow-0.3',
+      'CabalResearch/NoobAI-Flux2VAE-RectifiedFlow'
+    ]
   },
   {
     id: 'chenkin-rf',
@@ -72,13 +75,15 @@ const normalizeModel = (model) => {
   };
 };
 
-const fetchTopPanel = async (config) => {
+const fetchAuthorModels = async (config) => {
   const author = new URL(config.profileHref).pathname.slice(1);
   const apiUrl =
     `https://huggingface.co/api/models?author=${author}` +
     '&sort=downloads&direction=-1&limit=100&expand[]=downloads&expand[]=downloadsAllTime';
-  const models = await fetchJson(apiUrl);
+  return fetchJson(apiUrl);
+};
 
+const buildTopGroup = (config, models) => {
   return {
     id: config.id,
     title: config.title,
@@ -89,30 +94,35 @@ const fetchTopPanel = async (config) => {
   };
 };
 
-const fetchPinnedPanel = async (config) => {
-  const model = await fetchJson(`https://huggingface.co/api/models/${config.pinnedRepoId}`);
-
+const buildPinnedGroup = (config, models) => {
+  const modelMap = new Map(models.map((model) => [String(model.id), model]));
   return {
     id: config.id,
     title: config.title,
     sourceHref: config.profileHref,
-    moreCount: 0,
+    moreCount: Math.max(models.length - config.pinnedRepoIds.length, 0),
     moreHref: config.moreHref,
-    items: [normalizeModel(model)]
+    items: config.pinnedRepoIds
+      .map((repoId) => modelMap.get(repoId))
+      .filter(Boolean)
+      .map(normalizeModel)
   };
 };
 
 const fetchProjects = async () => {
-  const panels = await Promise.all(
+  const groups = await Promise.all(
     profileConfigs.map((config) =>
-      config.fetchMode === 'pinned' ? fetchPinnedPanel(config) : fetchTopPanel(config)
+      fetchAuthorModels(config).then((models) =>
+        config.fetchMode === 'pinned'
+          ? buildPinnedGroup(config, models)
+          : buildTopGroup(config, models)
+      )
     )
   );
 
   return {
-    clusterTitle: 'Personal',
     generatedAt: new Date().toISOString(),
-    panels
+    groups
   };
 };
 
