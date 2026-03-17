@@ -7,8 +7,6 @@ import TagList from './components/TagList.vue';
 import ThemeToggle from './components/ThemeToggle.vue';
 import {
   about,
-  education,
-  experience,
   githubProjects,
   navItems,
   privateProjects,
@@ -320,75 +318,6 @@ onBeforeUnmount(() => {
                   <img :src="post.imageSrc" :alt="post.imageAlt ?? post.title" />
                 </div>
               </a>
-            </InfoCard>
-          </div>
-        </SectionShell>
-
-        <SectionShell
-          id="education"
-          title="Education"
-        >
-          <div class="education-grid">
-            <InfoCard v-for="item in education" :key="`${item.institution}-${item.program}`">
-              <div class="education-card">
-                <div class="timeline-card__header">
-                  <div>
-                    <h3>{{ item.program }}</h3>
-                    <p class="timeline-card__company">{{ item.institution }}</p>
-                  </div>
-                  <div class="timeline-card__meta">
-                    <span>{{ item.period }}</span>
-                    <span>{{ item.location }}</span>
-                  </div>
-                </div>
-
-                <p class="card-copy">{{ item.details }}</p>
-                <TagList :items="item.extras" />
-              </div>
-            </InfoCard>
-          </div>
-        </SectionShell>
-
-        <SectionShell
-          id="experience"
-          title="Experience"
-        >
-          <div class="stack-grid">
-            <InfoCard v-for="role in experience" :key="`${role.company}-${role.role}`">
-              <div class="timeline-card">
-                <div class="timeline-card__header">
-                  <div>
-                    <h3>{{ role.role }}</h3>
-                    <p class="timeline-card__company">
-                      <a
-                        v-if="role.website"
-                        :href="role.website"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {{ role.company }}
-                      </a>
-                      <template v-else>
-                        {{ role.company }}
-                      </template>
-                    </p>
-                  </div>
-                  <div class="timeline-card__meta">
-                    <span>{{ role.period }}</span>
-                    <span>{{ role.location }}</span>
-                  </div>
-                </div>
-
-                <p class="card-copy">{{ role.summary }}</p>
-
-                <ul class="check-list">
-                  <li v-for="achievement in role.achievements" :key="achievement">
-                    {{ achievement }}
-                  </li>
-                </ul>
-
-                <TagList :items="role.tech" />
-              </div>
             </InfoCard>
           </div>
         </SectionShell>
