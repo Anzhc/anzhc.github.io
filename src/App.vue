@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import BackgroundGraph from './components/BackgroundGraph.vue';
 import InfoCard from './components/InfoCard.vue';
 import SectionShell from './components/SectionShell.vue';
 import SidebarNav from './components/SidebarNav.vue';
@@ -133,6 +134,8 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="site-shell">
+    <BackgroundGraph :theme="theme" />
+
     <SidebarNav
       :nav-items="navItems"
       :theme="theme"
@@ -332,6 +335,8 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .site-main {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: 2.5rem;
   padding-top: 2.4rem;
@@ -897,6 +902,8 @@ onBeforeUnmount(() => {
 }
 
 .site-footer {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
