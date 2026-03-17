@@ -18,7 +18,7 @@ export const githubProjects: ShowcaseCardItem[] = [
   {
     title: 'Timestep Attention',
     description:
-      'A light research project targetting dynamic timestep distributions based on the practical timestep loss landscape of Diffusion Models. Additionally repo includes few other things.',
+      'A light research project targeting dynamic timestep distributions based on the practical timestep loss landscape of Diffusion Models. Additionally repo includes few other things.',
     href: 'https://github.com/Anzhc/Timestep-Attention-and-other-shenanigans',
     linkLabel: 'GitHub'
   },

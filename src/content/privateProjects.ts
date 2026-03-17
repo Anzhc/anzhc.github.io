@@ -31,7 +31,7 @@ export const privateProjects: ShowcaseCardItem[] = [
       'A database for image retrieval based on similarity of features, particularly style. Utilizes Dinov2/3 for building embedding database, which then allows for comparison of them.'
   },
   {
-    title: 'Chain Filering',
+    title: 'Chain Filtering',
     description:
       'Custom node-based UI, specialized for highly customizable data filtering, utilizing AI models. Scalable across multiple GPUs.'
   },

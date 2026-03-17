@@ -8,7 +8,7 @@ export const profileConfigs = [
       {
         repoId: 'Anzhc/Anzhcs-VAEs',
         description:
-          'Collection of VAE(Variational Autoencoder) models, experiments, and finetunes, particularly for SDXL, targetting improved visuals for generations.'
+          'Collection of VAE(Variational Autoencoder) models, experiments, and finetunes, particularly for SDXL, targeting improved visuals for generations.'
       },
       {
         repoId: 'Anzhc/Anzhcs_YOLOs',
@@ -28,12 +28,12 @@ export const profileConfigs = [
       {
         repoId: 'Anzhc/Noobai11-CLIP-L-and-BigG-Anime-Text-Encoders',
         description:
-          "Special project testing text encoders in Noobai model, their performance in retrieval task, and finetuning them on an anime-specific dataset, as well as showcasing performance on the token count well beyond architectural limit of 77. (Refer to Post section for full research)"
+          "Special project testing text encoders in Noobai model, their performance in retrieval task, and finetuning them on an anime-specific dataset, as well as showcasing performance on the token count well beyond architectural limit of 77. (Refer to Posts section for full research)"
       },
       {
         repoId: 'Anzhc/SDXL-Text-Encoder-Longer-CLIP-L',
         description:
-          "Experimental finetune on smaller dataset, consisting of data only with 225 or more tokens, essentially pinning CLIP to 3+ chunks. Benchmarks show that CLIP is capable of retrieval far beyond it's limits, even at the range of 300 and even 400 tokens."
+          "Experimental finetune on smaller dataset, consisting of data only with 225 or more tokens, essentially pinning CLIP to 3+ chunks. Benchmarks show that CLIP is capable of retrieval far beyond its limits, even at the range of 300 and even 400 tokens."
       }
     ]
   },
