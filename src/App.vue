@@ -41,17 +41,23 @@ const toggleTheme = () => {
   setTheme(theme.value === 'dark' ? 'light' : 'dark');
 };
 
-const heroActions = computed(() =>
+const heroPrimaryLinks = computed(() =>
   profile.primaryLinks.map((link) => ({
     ...link,
     isEmail: link.href.startsWith('mailto:'),
     rel: link.external ? 'noopener noreferrer' : undefined,
     target: link.external ? '_blank' : undefined
   }))
-);
+    .sort((left, right) => {
+      const order = new Map([
+        ['Hugging Face', 0],
+        ['GitHub', 1],
+        ['Email', 2]
+      ]);
 
-const heroEmailLink = computed(() => heroActions.value.find((link) => link.isEmail));
-const heroSocialLinks = computed(() => heroActions.value.filter((link) => !link.isEmail));
+      return (order.get(left.label) ?? 99) - (order.get(right.label) ?? 99);
+    })
+);
 const activeSectionId = ref(navItems[0]?.id ?? '');
 
 const compactNumber = new Intl.NumberFormat('en-US', {
@@ -141,37 +147,27 @@ onBeforeUnmount(() => {
         <ThemeToggle :theme="theme" @toggle="toggleTheme" />
       </div>
 
-        <section class="hero panel">
+      <section class="hero panel">
           <div class="hero__copy">
             <h1>{{ profile.name }}</h1>
             <p class="hero__title">{{ profile.title }}</p>
             <p class="hero__intro">{{ profile.intro }}</p>
-          </div>
-
-          <div class="hero__actions">
-            <div class="hero__action-email">
-              <a
-                v-if="heroEmailLink"
-                class="hero__action-link hero__action-link--email"
-                :href="heroEmailLink.href"
-              >
-                <span class="hero__action-value">anzhc1@gmail.com</span>
-              </a>
-            </div>
 
             <div class="hero__action-buttons">
               <a
-                v-for="link in heroSocialLinks"
+                v-for="link in heroPrimaryLinks"
                 :key="link.label"
                 class="hero__action-link hero__action-link--button"
                 :href="link.href"
                 :target="link.target"
                 :rel="link.rel"
               >
-                <span class="hero__action-value">{{ link.label }}</span>
-                </a>
-              </div>
+                <span class="hero__action-value">
+                  {{ link.isEmail ? 'anzhc1@gmail.com' : link.label }}
+                </span>
+              </a>
             </div>
+          </div>
 
           <div class="hero__avatar">
             <div class="hero__avatar-circle">
@@ -425,9 +421,9 @@ onBeforeUnmount(() => {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto 16rem;
+  grid-template-columns: minmax(0, 1fr) 16rem;
   grid-template-areas:
-    'copy actions avatar';
+    'copy avatar';
   align-items: center;
   gap: 1.5rem;
   padding: 1.35rem 0 0;
@@ -489,18 +485,8 @@ onBeforeUnmount(() => {
 }
 
 .hero__actions {
-  grid-area: actions;
   display: grid;
   gap: 0.9rem;
-  align-content: center;
-  justify-items: center;
-  min-width: 10rem;
-}
-
-.hero__action-email {
-  display: flex;
-  justify-content: center;
-  min-width: 0;
 }
 
 .hero__action-link {
@@ -510,11 +496,6 @@ onBeforeUnmount(() => {
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.96rem;
-}
-
-.hero__action-link--email {
-  color: var(--text-primary);
-  justify-self: start;
 }
 
 .hero__action-link--button {
@@ -559,9 +540,9 @@ onBeforeUnmount(() => {
 }
 
 .hero__action-buttons {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
-  justify-items: center;
 }
 
 .hero__action-label {
@@ -1016,7 +997,7 @@ onBeforeUnmount(() => {
   }
 
   .hero {
-    grid-template-columns: minmax(0, 1fr) auto 13rem;
+    grid-template-columns: minmax(0, 1fr) 13rem;
   }
 }
 
@@ -1025,7 +1006,6 @@ onBeforeUnmount(() => {
     grid-template-columns: 1fr;
     grid-template-areas:
       'copy'
-      'actions'
       'avatar';
   }
 
@@ -1122,7 +1102,6 @@ onBeforeUnmount(() => {
     gap: 1rem;
   }
 
-  .hero__action-email,
   .hero__action-buttons {
     width: 100%;
   }
