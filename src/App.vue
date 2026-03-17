@@ -74,6 +74,7 @@ const formatCompactNumber = (value: number) => compactNumber.format(value);
 const formatShortDate = (value: string) => shortDate.format(new Date(value));
 
 let sectionObserver: IntersectionObserver | null = null;
+let interactiveEdgeCleanup: (() => void) | null = null;
 
 onMounted(() => {
   const sections = navItems
@@ -126,8 +127,81 @@ onMounted(() => {
   }
 });
 
+onMounted(() => {
+  const interactiveElements = document.querySelectorAll<HTMLElement>(
+    '.interactive-edge'
+  );
+
+  const proximityThreshold = 42;
+
+  const updateElementProximity = (element: HTMLElement, clientX: number, clientY: number) => {
+    const bounds = element.getBoundingClientRect();
+    const clampedX = Math.min(Math.max(clientX, bounds.left), bounds.right);
+    const clampedY = Math.min(Math.max(clientY, bounds.top), bounds.bottom);
+    const deltaX = clientX - clampedX;
+    const deltaY = clientY - clampedY;
+    const distance = Math.hypot(deltaX, deltaY);
+
+    if (distance <= proximityThreshold) {
+      element.dataset.edgeActive = 'true';
+      element.style.setProperty('--edge-x', `${clampedX - bounds.left}px`);
+      element.style.setProperty('--edge-y', `${clampedY - bounds.top}px`);
+      return;
+    }
+
+    delete element.dataset.edgeActive;
+    element.style.removeProperty('--edge-x');
+    element.style.removeProperty('--edge-y');
+  };
+
+  const resetElementProximity = (element: HTMLElement) => {
+    delete element.dataset.edgeActive;
+    element.style.removeProperty('--edge-x');
+    element.style.removeProperty('--edge-y');
+  };
+
+  const handlePointerMove = (event: PointerEvent) => {
+    for (const element of interactiveElements) {
+      updateElementProximity(element, event.clientX, event.clientY);
+    }
+  };
+
+  const handlePointerLeaveViewport = () => {
+    for (const element of interactiveElements) {
+      resetElementProximity(element);
+    }
+  };
+
+  window.addEventListener('pointermove', handlePointerMove, { passive: true });
+  document.addEventListener('pointerleave', handlePointerLeaveViewport);
+
+  const cleanups = Array.from(interactiveElements, (element) => {
+    const resetPointerPosition = () => {
+      delete element.dataset.edgeActive;
+      element.style.removeProperty('--edge-x');
+      element.style.removeProperty('--edge-y');
+    };
+
+    element.addEventListener('pointerleave', resetPointerPosition);
+
+    return () => {
+      element.removeEventListener('pointerleave', resetPointerPosition);
+    };
+  });
+
+  interactiveEdgeCleanup = () => {
+    window.removeEventListener('pointermove', handlePointerMove);
+    document.removeEventListener('pointerleave', handlePointerLeaveViewport);
+
+    for (const cleanup of cleanups) {
+      cleanup();
+    }
+  };
+});
+
 onBeforeUnmount(() => {
   sectionObserver?.disconnect();
+  interactiveEdgeCleanup?.();
 });
 
 </script>
@@ -158,7 +232,7 @@ onBeforeUnmount(() => {
               <a
                 v-for="link in heroPrimaryLinks"
                 :key="link.label"
-                class="hero__action-link hero__action-link--button"
+                class="hero__action-link hero__action-link--button interactive-edge"
                 :href="link.href"
                 :target="link.target"
                 :rel="link.rel"
@@ -203,7 +277,7 @@ onBeforeUnmount(() => {
                   <a
                     v-for="project in group.items"
                     :key="project.id"
-                    class="project-slim-card"
+                    class="project-slim-card interactive-edge"
                     :href="project.href"
                     target="_blank"
                     rel="noreferrer"
@@ -251,26 +325,22 @@ onBeforeUnmount(() => {
           title="Open Projects"
         >
           <div class="showcase-grid">
-            <InfoCard
+            <a
               v-for="project in githubProjects"
               :key="project.title"
-              class="showcase-card showcase-card--interactive"
+              class="showcase-card__link interactive-edge"
+              :href="project.href"
+              target="_blank"
+              rel="noreferrer"
             >
-              <a
-                class="showcase-card__link"
-                :href="project.href"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div class="showcase-card__body">
-                  <div class="showcase-card__header">
-                    <h3>{{ project.title }}</h3>
-                  </div>
-
-                  <p>{{ project.description }}</p>
+              <div class="showcase-card__body">
+                <div class="showcase-card__header">
+                  <h3>{{ project.title }}</h3>
                 </div>
-              </a>
-            </InfoCard>
+
+                <p>{{ project.description }}</p>
+              </div>
+            </a>
           </div>
         </SectionShell>
 
@@ -298,30 +368,26 @@ onBeforeUnmount(() => {
           title="Posts"
         >
           <div class="posts-grid">
-            <InfoCard
+            <a
               v-for="post in posts"
               :key="post.title"
-              class="showcase-card showcase-card--interactive"
+              class="post-card interactive-edge"
+              :href="post.href"
+              target="_blank"
+              rel="noreferrer"
             >
-              <a
-                class="post-card"
-                :href="post.href"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div class="post-card__copy">
-                  <div class="showcase-card__header">
-                    <h3>{{ post.title }}</h3>
-                  </div>
-
-                  <p>{{ post.description }}</p>
+              <div class="post-card__copy">
+                <div class="showcase-card__header">
+                  <h3>{{ post.title }}</h3>
                 </div>
 
-                <div v-if="post.imageSrc" class="post-card__media">
-                  <img :src="post.imageSrc" :alt="post.imageAlt ?? post.title" />
-                </div>
-              </a>
-            </InfoCard>
+                <p>{{ post.description }}</p>
+              </div>
+
+              <div v-if="post.imageSrc" class="post-card__media">
+                <img :src="post.imageSrc" :alt="post.imageAlt ?? post.title" />
+              </div>
+            </a>
           </div>
         </SectionShell>
     </main>
@@ -442,10 +508,9 @@ onBeforeUnmount(() => {
   color: var(--text-primary);
 }
 
-.hero__action-link--button,
-.project-slim-card,
-.project-group__more,
-.showcase-card--interactive {
+.interactive-edge,
+.project-group__more {
+  position: relative;
   transition:
     border-color 180ms ease,
     background-color 180ms ease,
@@ -453,24 +518,56 @@ onBeforeUnmount(() => {
     box-shadow 180ms ease;
 }
 
-.hero__action-link--button:hover,
-.hero__action-link--button:focus-visible,
-.project-slim-card:hover,
-.project-slim-card:focus-visible,
-.showcase-card--interactive:hover,
-.showcase-card--interactive:focus-within {
+.interactive-edge::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background:
+    radial-gradient(
+      8rem circle at var(--edge-x, 50%) var(--edge-y, 50%),
+      color-mix(in srgb, var(--accent-strong) 78%, white) 0%,
+      color-mix(in srgb, var(--accent) 44%, transparent) 28%,
+      transparent 60%
+    )
+    border-box;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity 180ms ease;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+.interactive-edge[data-edge-active='true']::after {
+  opacity: 0.64;
+}
+
+.interactive-edge:hover,
+.interactive-edge:focus-within,
+.interactive-edge:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 10px 24px color-mix(in srgb, var(--bg) 65%, transparent);
 }
 
-.hero__action-link--button:hover,
-.hero__action-link--button:focus-visible,
-.project-slim-card:hover,
-.project-slim-card:focus-visible,
-.showcase-card--interactive:hover,
-.showcase-card--interactive:focus-within {
+.interactive-edge:hover,
+.interactive-edge:focus-within,
+.interactive-edge:focus-visible {
   border-color: var(--border-strong);
   background: color-mix(in srgb, var(--surface-card) 94%, var(--surface-raised));
+}
+
+.interactive-edge:hover::after,
+.interactive-edge:focus-within::after,
+.interactive-edge:focus-visible::after {
+  opacity: 1;
 }
 
 .hero__action-buttons {
@@ -641,10 +738,15 @@ onBeforeUnmount(() => {
 }
 
 .showcase-card__link {
+  position: relative;
+  z-index: 1;
   display: grid;
   min-height: 100%;
   color: inherit;
   text-decoration: none;
+  border: 1px solid var(--border-soft);
+  border-radius: 0.35rem;
+  background: var(--surface-card);
 }
 
 .showcase-card__link:focus-visible {
@@ -659,12 +761,17 @@ onBeforeUnmount(() => {
 }
 
 .post-card {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: stretch;
   min-height: 16rem;
   color: inherit;
   text-decoration: none;
+  border: 1px solid var(--border-soft);
+  border-radius: 0.35rem;
+  background: var(--surface-card);
 }
 
 .post-card:focus-visible {
@@ -691,6 +798,9 @@ onBeforeUnmount(() => {
   min-width: 0;
   border-left: 1px solid var(--border-soft);
   background: color-mix(in srgb, var(--surface-raised) 72%, transparent);
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+  overflow: hidden;
 }
 
 .post-card__media img {
@@ -992,6 +1102,8 @@ onBeforeUnmount(() => {
     min-height: 12rem;
     border-top: 1px solid var(--border-soft);
     border-left: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: inherit;
   }
 
   .post-card__media img {
