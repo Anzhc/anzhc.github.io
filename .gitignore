@@ -13,3 +13,4 @@ pnpm-debug.log*
 *.tsbuildinfo
 .idea/
 .vscode/
+scripts/fonts/
