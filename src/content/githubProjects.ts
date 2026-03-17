@@ -25,7 +25,7 @@ export const githubProjects: ShowcaseCardItem[] = [
   {
     title: '...And other projects',
     description:
-      'Additional experiments, tools, and smaller repositories are available on the full GitHub profile.',
+      'Commits to ReForge, ComfyUI node packs, utility UIs, Some really old scripts and even a browser extension can be found in my Github profile.',
     href: 'https://github.com/Anzhc',
     linkLabel: 'GitHub'
   }
