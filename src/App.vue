@@ -681,6 +681,7 @@ onBeforeUnmount(() => {
   margin: 0;
   color: var(--text-secondary);
   line-height: 1.75;
+  white-space: pre-line;
 }
 
 .post-card__media {

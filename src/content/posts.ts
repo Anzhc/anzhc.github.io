@@ -6,7 +6,7 @@ export const posts: ShowcaseCardItem[] = [
   {
     title: 'CLIPs in Noobai Model are Flawed',
     description:
-      'A small research about text encoders in an anime model, finding task collapse, and consequently "reviving" it in CLIP L, which in turn improves generation quality. Additionally, finetuned CLIP BigG achieves strong R@1 performance on substantial validation set of ~5000 images - over 80% - at high token count.',
+      'A small research about text encoders in an anime model, finding task collapse, and consequently "reviving" it in CLIP L, which in turn improves generation quality. Additionally, finetuned CLIP BigG achieves strong R@1 performance on substantial validation set of ~5000 images - over 80% - at high token count.\n\nWritten in 2 parts, with second diving into specific changes in clustering of tag representations.',
     href: 'https://www.reddit.com/r/StableDiffusion/comments/1o1u2zm/text_encoders_in_noobai_are_dramatically_flawed_a/',
     imageSrc: clipPostImage,
     imageAlt: 'Preview image for the CLIPs in Noobai research post'
