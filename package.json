@@ -6,8 +6,8 @@
   "scripts": {
     "refresh:projects": "node scripts/generate-huggingface-projects.mjs",
     "refresh:og": "python scripts/generate-og-image.py",
-    "predev": "npm run refresh:projects && npm run refresh:og",
-    "prebuild": "npm run refresh:projects && npm run refresh:og",
+    "predev": "npm run refresh:projects",
+    "prebuild": "npm run refresh:projects",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
