@@ -592,7 +592,6 @@ onBeforeUnmount(() => {
 .project-card,
 .education-card,
 .skill-card,
-.highlights-block,
 .copy-block {
   display: grid;
   gap: 1rem;

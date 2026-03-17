@@ -11,28 +11,18 @@ export interface NavItem {
   label: string;
 }
 
-export interface StatItem {
-  value: string;
-  label: string;
-}
-
 export interface Profile {
   name: string;
   title: string;
-  location: string;
   intro: string;
   avatarImage: string;
   avatarAlt: string;
-  summary: string;
-  availability: string;
   primaryLinks: ActionLink[];
-  stats: StatItem[];
 }
 
 export interface AboutContent {
   lead: string;
   paragraphs: string[];
-  highlights: string[];
 }
 
 export interface ProjectItem {

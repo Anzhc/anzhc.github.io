@@ -8,11 +8,5 @@ export const about: AboutContent = {
     'My primary strength is experimentation and research, despite constrained compute budget. I have developed many projects and models that utilize new approaches, and showcase data in appealing and easier to understand ways.',
     'Overall, my projects have garnered widespread acknowledgement in community, and total downloads/usage visible to me (excluding reuploads and indirect hosting) has reached well over million.',
     'As a bonus, i am an artist, and dabble in many other areas that often come in handy in day-to-day work, from basic operations to content creation.'
-  ],
-  highlights: [
-    'Strong at turning ambiguous requirements into clean, testable UI.',
-    'Comfortable partnering with design, product, and engineering leads.',
-    'Focused on maintainability, performance budgets, and accessible interaction patterns.',
-    'Experienced with component libraries, migration work, and platform-level frontend improvements.'
   ]
 };
