@@ -46,12 +46,68 @@ html {
   scroll-behavior: smooth;
 }
 
+:root,
+html,
 body {
   margin: 0;
   min-width: 320px;
   font-family: var(--font-sans);
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--border-strong) 92%, var(--accent-strong))
+    color-mix(in srgb, var(--bg) 96%, transparent);
+}
+
+body {
   background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 96%, #000) 0%, var(--bg) 100%);
   color: var(--text-primary);
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+*::-webkit-scrollbar {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--border-strong) 34%, transparent) 12%,
+    color-mix(in srgb, var(--border-strong) 34%, transparent) 88%,
+    transparent 100%
+  );
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent-strong) 74%, var(--border-strong)),
+      color-mix(in srgb, var(--border-strong) 94%, var(--accent))
+    )
+    padding-box;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent-strong) 26%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--bg) 40%, transparent);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent-strong) 88%, var(--border-strong)),
+      color-mix(in srgb, var(--accent) 84%, var(--border-strong))
+    )
+    padding-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 a {
