@@ -32,14 +32,14 @@ let palette = {
 
 const getNodeCount = (width: number) => {
   if (width < 640) {
-    return 24;
+    return 34;
   }
 
   if (width < 1024) {
-    return 36;
+    return 50;
   }
 
-  return 52;
+  return 72;
 };
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
