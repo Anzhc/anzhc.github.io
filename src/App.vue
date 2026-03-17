@@ -816,7 +816,7 @@ onBeforeUnmount(() => {
 }
 
 .showcase-card__header h3,
-.showcase-card p {
+.showcase-card__body p {
   margin: 0;
 }
 
@@ -825,7 +825,7 @@ onBeforeUnmount(() => {
   line-height: 1.2;
 }
 
-.showcase-card p {
+.showcase-card__body p {
   color: var(--text-secondary);
   line-height: 1.75;
 }
