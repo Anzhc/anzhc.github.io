@@ -408,7 +408,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .site-main {
   display: grid;
-  gap: 5.5rem;
+  gap: 3.25rem;
   padding-top: 2.4rem;
   padding-bottom: 4rem;
 }
@@ -1099,7 +1099,7 @@ onBeforeUnmount(() => {
 
 @media (max-width: 640px) {
   .site-main {
-    gap: 4.25rem;
+    gap: 2.75rem;
   }
 
   .hero h1 {
