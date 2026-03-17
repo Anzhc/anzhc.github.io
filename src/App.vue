@@ -7,6 +7,8 @@ import SidebarNav from './components/SidebarNav.vue';
 import ThemeToggle from './components/ThemeToggle.vue';
 import {
   about,
+  education,
+  experience,
   githubProjects,
   navItems,
   privateProjects,
@@ -388,6 +390,97 @@ onBeforeUnmount(() => {
               </div>
             </a>
           </div>
+        </SectionShell>
+
+        <SectionShell
+          id="experience"
+          title="Experience"
+        >
+          <div v-if="experience.length" class="stack-grid">
+            <InfoCard v-for="item in experience" :key="`${item.company}-${item.role}`">
+              <div class="timeline-card">
+                <div class="timeline-card__header">
+                  <div>
+                    <h3>{{ item.role }}</h3>
+                    <p class="timeline-card__company">
+                      <a
+                        v-if="item.website"
+                        :href="item.website"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {{ item.company }}
+                      </a>
+                      <template v-else>
+                        {{ item.company }}
+                      </template>
+                    </p>
+                  </div>
+
+                  <div class="timeline-card__meta">
+                    <span>{{ item.period }}</span>
+                    <span v-if="item.location">{{ item.location }}</span>
+                  </div>
+                </div>
+
+                <p class="card-copy">{{ item.summary }}</p>
+
+                <ul v-if="item.achievements?.length" class="check-list">
+                  <li v-for="achievement in item.achievements" :key="achievement">
+                    {{ achievement }}
+                  </li>
+                </ul>
+
+                <div v-if="item.tech?.length" class="stack-copy">
+                  <p class="card-label">Tech</p>
+                  <p class="card-copy">{{ item.tech.join(' • ') }}</p>
+                </div>
+              </div>
+            </InfoCard>
+          </div>
+          <InfoCard v-else>
+            <div class="copy-block">
+              <p>Placeholder</p>
+            </div>
+          </InfoCard>
+        </SectionShell>
+
+        <SectionShell
+          id="education"
+          title="Education"
+        >
+          <div v-if="education.length" class="education-grid">
+            <InfoCard v-for="item in education" :key="`${item.institution}-${item.program}`">
+              <div class="education-card">
+                <div class="education-card__header">
+                  <div>
+                    <h3>{{ item.program }}</h3>
+                  </div>
+
+                  <div
+                    v-if="item.period || item.location"
+                    class="education-card__meta"
+                  >
+                    <span v-if="item.period">{{ item.period }}</span>
+                    <span v-if="item.location">{{ item.location }}</span>
+                  </div>
+                </div>
+
+                <p v-if="item.details" class="card-copy">{{ item.details }}</p>
+
+                <ul v-if="item.extras?.length" class="check-list">
+                  <li v-for="extra in item.extras" :key="extra">
+                    {{ extra }}
+                  </li>
+                </ul>
+              </div>
+            </InfoCard>
+          </div>
+          <InfoCard v-else>
+            <div class="copy-block">
+              <p>Placeholder</p>
+            </div>
+          </InfoCard>
         </SectionShell>
 
     </main>
@@ -903,6 +996,10 @@ onBeforeUnmount(() => {
   line-height: 1.8;
 }
 
+.card-copy {
+  white-space: pre-line;
+}
+
 .check-list {
   display: grid;
   gap: 0.85rem;
@@ -930,6 +1027,7 @@ onBeforeUnmount(() => {
 }
 
 .timeline-card__header,
+.education-card__header,
 .project-card__header {
   display: flex;
   justify-content: space-between;
@@ -937,6 +1035,7 @@ onBeforeUnmount(() => {
 }
 
 .timeline-card__header h3,
+.education-card__header h3,
 .project-card__header h3 {
   margin: 0;
   font-size: 1.35rem;
@@ -959,6 +1058,20 @@ onBeforeUnmount(() => {
 .timeline-card__meta {
   display: grid;
   gap: 0.25rem;
+  text-align: right;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.education-card__meta,
+.stack-copy {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.education-card__meta {
   text-align: right;
   color: var(--text-muted);
   font-size: 0.9rem;
@@ -1033,12 +1146,14 @@ onBeforeUnmount(() => {
   }
 
   .timeline-card__header,
+  .education-card__header,
   .project-card__header,
   .site-footer {
     flex-direction: column;
   }
 
-  .timeline-card__meta {
+  .timeline-card__meta,
+  .education-card__meta {
     text-align: left;
   }
 

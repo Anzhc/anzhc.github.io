@@ -19,5 +19,7 @@ export const navItems: NavItem[] = [
   { id: 'models', label: 'Models' },
   { id: 'projects', label: 'Open Projects' },
   { id: 'private-projects', label: 'Private Projects' },
-  { id: 'posts', label: 'Posts' }
+  { id: 'posts', label: 'Posts' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'education', label: 'Education' }
 ];

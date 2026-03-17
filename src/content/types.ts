@@ -25,6 +25,26 @@ export interface AboutContent {
   paragraphs: string[];
 }
 
+export interface ExperienceItem {
+  company: string;
+  role: string;
+  period: string;
+  location?: string;
+  summary: string;
+  achievements?: string[];
+  tech?: string[];
+  website?: string;
+}
+
+export interface EducationItem {
+  institution: string;
+  program: string;
+  period: string;
+  location?: string;
+  details?: string;
+  extras?: string[];
+}
+
 export interface ProjectItem {
   id: string;
   name: string;
