@@ -4,7 +4,6 @@ import BackgroundGraph from './components/BackgroundGraph.vue';
 import InfoCard from './components/InfoCard.vue';
 import SectionShell from './components/SectionShell.vue';
 import SidebarNav from './components/SidebarNav.vue';
-import TagList from './components/TagList.vue';
 import ThemeToggle from './components/ThemeToggle.vue';
 import {
   about,
@@ -591,7 +590,6 @@ onBeforeUnmount(() => {
 .timeline-card,
 .project-card,
 .education-card,
-.contact-card,
 .skill-card,
 .highlights-block,
 .copy-block {
@@ -609,8 +607,7 @@ onBeforeUnmount(() => {
   font-weight: 800;
 }
 
-.two-column,
-.contact-grid {
+.two-column {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
@@ -940,8 +937,7 @@ onBeforeUnmount(() => {
 }
 
 .timeline-card__header h3,
-.project-card__header h3,
-.contact-card h3 {
+.project-card__header h3 {
   margin: 0;
   font-size: 1.35rem;
   line-height: 1.2;
@@ -955,8 +951,7 @@ onBeforeUnmount(() => {
 }
 
 .timeline-card__company a,
-.project-card__links a,
-.contact-links__item {
+.project-card__links a {
   color: inherit;
   text-decoration: none;
 }
@@ -980,35 +975,6 @@ onBeforeUnmount(() => {
 
 .project-card__links a {
   color: var(--text-secondary);
-  font-weight: 700;
-}
-
-.contact-links {
-  display: grid;
-}
-
-.contact-links__item {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.2rem 1.35rem;
-  border-top: 1px solid var(--border-soft);
-}
-
-.contact-links__item:first-child {
-  border-top: 0;
-}
-
-.contact-links__label {
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.72rem;
-  font-weight: 800;
-}
-
-.contact-links__value {
-  text-align: right;
   font-weight: 700;
 }
 
@@ -1061,7 +1027,6 @@ onBeforeUnmount(() => {
   }
 
   .two-column,
-  .contact-grid,
   .skills-grid,
   .project-grid {
     grid-template-columns: 1fr;
@@ -1159,14 +1124,6 @@ onBeforeUnmount(() => {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .contact-links__item {
-    flex-direction: column;
-  }
-
-  .contact-links__value {
-    text-align: left;
   }
 
   .site-footer {

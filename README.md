@@ -66,12 +66,8 @@ All user-editable content lives in `src/content/` and is split by section:
 
 - `src/content/profile.ts`
 - `src/content/about.ts`
-- `src/content/skills.ts`
-- `src/content/experience.ts`
-- `src/content/education.ts`
-- `src/content/contact.ts`
 
-Update those files to change your name, bio, links, skills, work history, education, and contact details.
+Update those files to change your name, bio, links, and section content.
 
 `src/content/projects.ts` is generated from the Hugging Face profile configured in `scripts/generate-huggingface-projects.mjs`. Refresh it manually with:
 
