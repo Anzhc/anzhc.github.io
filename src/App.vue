@@ -15,6 +15,8 @@ import {
   posts,
   profile,
   projects as models
+  ,
+  websiteWork
 } from './content';
 import type { Theme } from './content';
 
@@ -340,6 +342,49 @@ onBeforeUnmount(() => {
                 </div>
 
                 <p>{{ project.description }}</p>
+              </div>
+            </a>
+          </div>
+        </SectionShell>
+
+        <SectionShell
+          id="website-work"
+          title="Website Work"
+        >
+          <div class="website-work-grid">
+            <a
+              v-for="project in websiteWork"
+              :key="project.title"
+              class="showcase-card__link interactive-edge"
+              :href="project.href"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <div class="showcase-card">
+                <div class="showcase-card__body">
+                  <div class="showcase-card__header showcase-card__header--icon">
+                    <div
+                      v-if="project.imageSrc"
+                      class="showcase-card__icon"
+                    >
+                      <img :src="project.imageSrc" :alt="project.imageAlt ?? project.title" />
+                    </div>
+                    <h3>{{ project.title }}</h3>
+                  </div>
+
+                  <p>
+                    {{ project.descriptionBeforeLink }}
+                    <a
+                      :href="project.linkHref"
+                      target="_blank"
+                      rel="noreferrer"
+                      @click.stop
+                    >
+                      {{ project.linkLabel }}
+                    </a>
+                    {{ project.descriptionAfterLink }}
+                  </p>
+                </div>
               </div>
             </a>
           </div>
@@ -817,6 +862,12 @@ onBeforeUnmount(() => {
   gap: 1rem;
 }
 
+.website-work-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
 .posts-grid {
   display: grid;
   gap: 1rem;
@@ -908,6 +959,28 @@ onBeforeUnmount(() => {
   align-items: baseline;
 }
 
+.showcase-card__header--icon {
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.showcase-card__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 2.5rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--surface-raised) 78%, transparent);
+}
+
+.showcase-card__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .showcase-card__header h3,
 .showcase-card__body p {
   margin: 0;
@@ -921,6 +994,12 @@ onBeforeUnmount(() => {
 .showcase-card__body p {
   color: var(--text-secondary);
   line-height: 1.75;
+}
+
+.showcase-card__body p a {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 .project-slim-card {

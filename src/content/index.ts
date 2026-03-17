@@ -6,6 +6,7 @@ export { privateProjects } from './privateProjects';
 export { profile, navItems } from './profile';
 export { posts } from './posts';
 export { projects } from './projects';
+export { websiteWork } from './websiteWork';
 export type {
   AboutContent,
   ActionLink,
@@ -17,5 +18,6 @@ export type {
   ProjectItem,
   ProjectsContent,
   ShowcaseCardItem,
-  Theme
+  Theme,
+  WebsiteWorkItem
 } from './types';

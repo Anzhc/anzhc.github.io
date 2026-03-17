@@ -76,3 +76,14 @@ export interface ShowcaseCardItem {
   imageSrc?: string;
   imageAlt?: string;
 }
+
+export interface WebsiteWorkItem {
+  title: string;
+  href: string;
+  descriptionBeforeLink: string;
+  linkLabel: string;
+  linkHref: string;
+  descriptionAfterLink: string;
+  imageSrc?: string;
+  imageAlt?: string;
+}
