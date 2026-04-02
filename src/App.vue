@@ -538,6 +538,7 @@ onBeforeUnmount(() => {
         </SectionShell>
 
         <SectionShell
+          v-if="false"
           id="education"
           title="Education"
         >
@@ -1259,7 +1260,6 @@ onBeforeUnmount(() => {
 
 .project-slim-card--featured .project-slim-card__description {
   max-width: 46rem;
-  color: color-mix(in srgb, white 82%, var(--text-secondary));
   line-height: 1.6;
 }
 
