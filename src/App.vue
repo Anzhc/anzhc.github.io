@@ -276,16 +276,32 @@ onBeforeUnmount(() => {
               </div>
 
               <div class="project-group__panel">
-                <div class="project-tabs">
+                <div
+                  :class="[
+                    'project-tabs',
+                    { 'project-tabs--featured': group.id === 'cabal-research' }
+                  ]"
+                >
                   <a
                     v-for="project in group.items"
                     :key="project.id"
-                    class="project-slim-card interactive-edge"
+                    :class="[
+                      'project-slim-card',
+                      'interactive-edge',
+                      { 'project-slim-card--featured': group.id === 'cabal-research' }
+                    ]"
                     :href="project.href"
                     target="_blank"
                     rel="noreferrer"
                     :title="project.repoPath"
                   >
+                    <span
+                      v-if="group.id === 'cabal-research'"
+                      class="project-slim-card__kicker"
+                    >
+                      Latest release
+                    </span>
+
                     <div class="project-slim-card__top">
                       <div class="project-slim-card__name">
                         <h4>{{ project.name }}</h4>
@@ -299,7 +315,14 @@ onBeforeUnmount(() => {
                       </div>
                     </div>
 
-                    <p class="project-slim-card__description">{{ project.description }}</p>
+                    <p
+                      :class="[
+                        'project-slim-card__description',
+                        { 'project-slim-card__description--featured': group.id === 'cabal-research' }
+                      ]"
+                    >
+                      {{ project.description }}
+                    </p>
                   </a>
                 </div>
 
@@ -831,6 +854,10 @@ onBeforeUnmount(() => {
   gap: 0.85rem;
 }
 
+.project-tabs--featured {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .project-group__footer {
   display: flex;
   justify-content: flex-end;
@@ -1015,6 +1042,55 @@ onBeforeUnmount(() => {
   background: color-mix(in srgb, var(--surface-card) 88%, transparent);
 }
 
+.project-slim-card--featured {
+  position: relative;
+  min-height: 14rem;
+  padding: 1.15rem 1.15rem 1.1rem;
+  overflow: hidden;
+  isolation: isolate;
+  background: color-mix(in srgb, var(--surface-card) 94%, var(--surface-raised));
+}
+
+.project-slim-card--featured::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface-card) 0%,
+      color-mix(in srgb, var(--surface-card) 100%, transparent) 16%,
+      color-mix(in srgb, var(--surface-card) 82%, transparent) 36%,
+      color-mix(in srgb, var(--surface-card) 28%, transparent) 62%,
+      transparent 80%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, rgb(8 10 16) 62%, transparent) 0%,
+      color-mix(in srgb, rgb(8 10 16) 52%, transparent) 52%,
+      color-mix(in srgb, rgb(8 10 16) 42%, transparent) 100%
+    ),
+    url('../media/mugen.webp');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.project-slim-card--featured > * {
+  position: relative;
+  z-index: 1;
+}
+
+.project-slim-card__kicker {
+  color: color-mix(in srgb, white 72%, var(--text-primary));
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .project-slim-card__top {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -1032,11 +1108,32 @@ onBeforeUnmount(() => {
   line-height: 1.15;
 }
 
+.project-slim-card--featured .project-slim-card__name h4,
+.project-slim-card--featured .project-slim-card__value {
+  text-shadow: 0 2px 16px color-mix(in srgb, black 45%, transparent);
+}
+
 .project-slim-card__description {
   margin: 0;
   color: var(--text-secondary);
   font-size: 0.8rem;
   line-height: 1.45;
+}
+
+.project-slim-card--featured .project-slim-card__description {
+  max-width: 46rem;
+  color: color-mix(in srgb, white 82%, var(--text-secondary));
+  line-height: 1.6;
+}
+
+.project-slim-card__description--featured {
+  align-self: end;
+  padding: 0.95rem 1rem;
+  border: 1px solid color-mix(in srgb, white 10%, transparent);
+  border-radius: 0.35rem;
+  background: color-mix(in srgb, var(--surface-card) 72%, transparent);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 10px 24px color-mix(in srgb, black 24%, transparent);
 }
 
 .project-slim-card__stats {
@@ -1060,6 +1157,10 @@ onBeforeUnmount(() => {
   letter-spacing: 0.12em;
   line-height: 1;
   text-transform: uppercase;
+}
+
+.project-slim-card--featured .project-slim-card__label {
+  color: color-mix(in srgb, white 55%, var(--text-muted));
 }
 
 .stack-grid,

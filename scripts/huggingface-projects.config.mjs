@@ -44,14 +44,9 @@ export const profileConfigs = [
     moreHref: 'https://huggingface.co/CabalResearch/models',
     featuredItems: [
       {
-        repoId: 'CabalResearch/NoobAI-Flux2VAE-RectifiedFlow-0.3',
+        repoId: 'CabalResearch/Mugen',
         description:
-          'Direct continuation of NoobAI-Flux2VAE-RectifiedFlow, improving upon the earlier Prototype.'
-      },
-      {
-        repoId: 'CabalResearch/NoobAI-Flux2VAE-RectifiedFlow',
-        description:
-          'Experimental architecture of an SDXL model using new VAE, bringing 32 channel latents to the arch. An early Prototype, trained in a tight budget.'
+          'Full conversion of SDXL to Flux 2 VAE latent space, switching from 4 to 32 channel VAE, drastically improving texturing. Additionally features anime data up to 03.2026, and introduces novel Character Knowledge benchmark, testing knowledge across popular categories like multiple gacha series and vtubers (hololive and nijisanji), utilizing custom DINOv3 head.'
       }
     ]
   },
