@@ -75,6 +75,9 @@ const shortDate = new Intl.DateTimeFormat('en-US', {
 
 const formatCompactNumber = (value: number) => compactNumber.format(value);
 const formatShortDate = (value: string) => shortDate.format(new Date(value));
+const modelsTotalMonthlyDownloads = computed(() =>
+  models.groups.reduce((sum, group) => sum + group.totalMonthlyDownloads, 0)
+);
 
 let sectionObserver: IntersectionObserver | null = null;
 let interactiveEdgeCleanup: (() => void) | null = null;
@@ -270,74 +273,95 @@ onBeforeUnmount(() => {
         >
           <div class="project-section">
             <div class="project-groups">
-            <section v-for="group in models.groups" :key="group.id" class="project-group">
-              <div class="project-group__header">
-                <h3>{{ group.title }}</h3>
-              </div>
+              <section v-for="group in models.groups" :key="group.id" class="project-group">
+                <div class="project-group__header">
+                  <h3>{{ group.title }}</h3>
+                </div>
 
-              <div class="project-group__panel">
-                <div
-                  :class="[
-                    'project-tabs',
-                    { 'project-tabs--featured': group.id === 'cabal-research' }
-                  ]"
-                >
-                  <a
-                    v-for="project in group.items"
-                    :key="project.id"
+                <div class="project-group__panel">
+                  <div
                     :class="[
-                      'project-slim-card',
-                      'interactive-edge',
-                      { 'project-slim-card--featured': group.id === 'cabal-research' }
+                      'project-tabs',
+                      { 'project-tabs--featured': group.id === 'cabal-research' }
                     ]"
-                    :href="project.href"
-                    target="_blank"
-                    rel="noreferrer"
-                    :title="project.repoPath"
                   >
-                    <span
-                      v-if="group.id === 'cabal-research'"
-                      class="project-slim-card__kicker"
-                    >
-                      Latest release
-                    </span>
-
-                    <div class="project-slim-card__top">
-                      <div class="project-slim-card__name">
-                        <h4>{{ project.name }}</h4>
-                      </div>
-
-                      <div class="project-slim-card__stats">
-                        <span class="project-slim-card__value">
-                          {{ formatCompactNumber(project.monthlyDownloads) }}/month
-                        </span>
-                        <span class="project-slim-card__label">downloads</span>
-                      </div>
-                    </div>
-
-                    <p
+                    <a
+                      v-for="project in group.items"
+                      :key="project.id"
                       :class="[
-                        'project-slim-card__description',
-                        { 'project-slim-card__description--featured': group.id === 'cabal-research' }
+                        'project-slim-card',
+                        'interactive-edge',
+                        { 'project-slim-card--featured': group.id === 'cabal-research' }
                       ]"
+                      :href="project.href"
+                      target="_blank"
+                      rel="noreferrer"
+                      :title="project.repoPath"
                     >
-                      {{ project.description }}
-                    </p>
-                  </a>
-                </div>
+                      <span
+                        v-if="group.id === 'cabal-research'"
+                        class="project-slim-card__kicker"
+                      >
+                        Latest release
+                      </span>
 
-                <div v-if="group.moreCount > 0" class="project-group__footer">
-                  <a
-                    class="project-group__more"
-                    :href="group.moreHref"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    ...{{ group.moreCount }} more
-                  </a>
+                      <div class="project-slim-card__top">
+                        <div class="project-slim-card__name">
+                          <h4>{{ project.name }}</h4>
+                        </div>
+
+                        <div class="project-slim-card__stats">
+                          <span class="project-slim-card__value">
+                            {{ formatCompactNumber(project.monthlyDownloads) }}/month
+                          </span>
+                          <span class="project-slim-card__label">downloads</span>
+                        </div>
+                      </div>
+
+                      <p
+                        :class="[
+                          'project-slim-card__description',
+                          { 'project-slim-card__description--featured': group.id === 'cabal-research' }
+                        ]"
+                      >
+                        {{ project.description }}
+                      </p>
+                    </a>
+                  </div>
+
+                  <div v-if="group.moreCount > 0" class="project-group__footer">
+                    <a
+                      class="project-group__more"
+                      :href="group.moreHref"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      ...{{ group.moreCount }} more
+                    </a>
+                  </div>
                 </div>
+              </section>
+
+              <div
+                v-if="modelsTotalMonthlyDownloads > 0"
+                class="project-groups__summary"
+                :title="`${modelsTotalMonthlyDownloads.toLocaleString('en-US')} combined monthly downloads`"
+              >
+                <span
+                  class="project-groups__summary-line project-groups__summary-line--top"
+                  aria-hidden="true"
+                />
+                <div class="project-groups__summary-copy">
+                  <span class="project-groups__summary-value">
+                    {{ formatCompactNumber(modelsTotalMonthlyDownloads) }}/month
+                  </span>
+                  <span class="project-groups__summary-label">combined</span>
+                </div>
+                <span
+                  class="project-groups__summary-line project-groups__summary-line--bottom"
+                  aria-hidden="true"
+                />
               </div>
-            </section>
             </div>
 
             <div class="project-section__footer">
@@ -789,6 +813,7 @@ onBeforeUnmount(() => {
 .project-groups {
   display: grid;
   gap: 1.35rem;
+  position: relative;
 }
 
 .project-group {
@@ -796,6 +821,118 @@ onBeforeUnmount(() => {
   display: grid;
   gap: 1rem;
   padding: 0.4rem 1.4rem;
+}
+
+.project-groups__summary {
+  position: absolute;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  left: calc(100% + 0.18rem);
+  width: clamp(6.6rem, 7vw, 8.1rem);
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  row-gap: 0.9rem;
+  justify-items: center;
+  pointer-events: none;
+}
+
+.project-groups__summary-copy {
+  display: grid;
+  gap: 0.2rem;
+  align-self: center;
+  justify-items: center;
+  text-align: center;
+  width: 100%;
+  padding-inline: 0.25rem;
+}
+
+.project-groups__summary-value {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.project-groups__summary-label {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.project-groups__summary-line {
+  position: relative;
+  --summary-bracket-color: color-mix(in srgb, var(--border-strong) 78%, transparent);
+  width: 3.7rem;
+  min-height: 3rem;
+  justify-self: start;
+  border-right: 1px solid var(--summary-bracket-color);
+}
+
+.project-groups__summary-line--top {
+  border-top: 1px solid var(--summary-bracket-color);
+  border-top-right-radius: 999px;
+}
+
+.project-groups__summary-line--top::before,
+.project-groups__summary-line--top::after,
+.project-groups__summary-line--bottom::before,
+.project-groups__summary-line--bottom::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.project-groups__summary-line--top::before {
+  top: -1px;
+  left: 0;
+  width: 2.6rem;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--bg) 0%,
+    var(--bg) 34%,
+    color-mix(in srgb, var(--bg) 72%, transparent) 68%,
+    transparent 100%
+  );
+}
+
+.project-groups__summary-line--top::after {
+  right: -1px;
+  bottom: 0;
+  width: 1px;
+  height: 1.2rem;
+  background: linear-gradient(180deg, transparent 0%, var(--bg) 100%);
+}
+
+.project-groups__summary-line--bottom {
+  border-bottom: 1px solid var(--summary-bracket-color);
+  border-bottom-right-radius: 999px;
+}
+
+.project-groups__summary-line--bottom::before {
+  bottom: -1px;
+  left: 0;
+  width: 2.6rem;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--bg) 0%,
+    var(--bg) 34%,
+    color-mix(in srgb, var(--bg) 72%, transparent) 68%,
+    transparent 100%
+  );
+}
+
+.project-groups__summary-line--bottom::after {
+  right: -1px;
+  width: 1px;
+  top: 0;
+  height: 1.2rem;
+  background: linear-gradient(180deg, var(--bg) 0%, transparent 100%);
 }
 
 .project-group::before,
@@ -1304,6 +1441,12 @@ onBeforeUnmount(() => {
 
   .hero {
     grid-template-columns: minmax(0, 1fr) 13rem;
+  }
+}
+
+@media (max-width: 1320px) {
+  .project-groups__summary {
+    display: none;
   }
 }
 

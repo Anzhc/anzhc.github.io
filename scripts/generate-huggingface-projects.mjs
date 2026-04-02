@@ -64,6 +64,10 @@ const buildGroup = (config, models) => {
     sourceHref: config.profileHref,
     moreCount: Math.max(models.length - config.featuredItems.length, 0),
     moreHref: config.moreHref,
+    totalMonthlyDownloads: models.reduce(
+      (sum, model) => sum + Number(model?.downloads ?? 0),
+      0
+    ),
     items: config.featuredItems.map((featuredItem) =>
       normalizeModel(featuredItem, modelMap.get(featuredItem.repoId))
     )

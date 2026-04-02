@@ -60,6 +60,7 @@ export interface ProjectGroup {
   sourceHref: string;
   moreCount: number;
   moreHref: string;
+  totalMonthlyDownloads: number;
   items: ProjectItem[];
 }
 
